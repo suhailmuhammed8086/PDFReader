@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PDF NoteMate</string>
+    <string name="about_the_application">About the Application</string>
+    <string name="start">Start</string>
+    <string name="search_here">Search here</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

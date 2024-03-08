@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+//    alias(libs.plugins.hilt.classpath)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -33,9 +35,22 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
+
+    packaging {
+        dex {
+            useLegacyPackaging = false
+        }
+    }
+
+
 }
 
+
 dependencies {
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -45,4 +60,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+
+//    // Room database
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+//    implementation(libs.room.compiler)
+//
+//
+//    // Hilt
+//    implementation(libs.dagger.hilt.kapt)
+    implementation(libs.dagger.hilt.android)
 }

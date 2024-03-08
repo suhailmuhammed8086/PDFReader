@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_color"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.activity.entry.EntryActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher_foreground" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jakarta_sans_bold_700"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="28sp" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/ripple_second_color_17r"
+        android:fontFamily="@font/jakarta_sans_bold_700"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:minHeight="56dp"
+        android:paddingHorizontal="60dp"
+        android:text="@string/start"
+        android:textColor="@color/white"
+        android:textSize="23sp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
