@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-//    alias(libs.plugins.hilt.classpath)
+    id("kotlin-kapt")
     id("kotlin-parcelize")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -69,7 +71,28 @@ dependencies {
 //    implementation(libs.room.compiler)
 //
 //
-//    // Hilt
-//    implementation(libs.dagger.hilt.kapt)
-    implementation(libs.dagger.hilt.android)
+//   // Hilt
+//    kapt (libs.dagger.hilt.kapt)
+//    kapt
+//    implementation(libs.dagger.hilt.android)
+
+    //OkHttpConnection
+    implementation(libs.okhttp.urlconnection)
+
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    // LiveData
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
 }
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
+

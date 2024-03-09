@@ -6,13 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.pdfnotemate.room.entity.PdfNoteEntity
+import com.example.pdfnotemate.room.entity.PdfTagEntity
 
-@Database([PdfNoteEntity::class], version = AppDatabase.VERSION)
+@Database([PdfNoteEntity::class, PdfTagEntity::class], version = AppDatabase.VERSION)
 @TypeConverters(TypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun getDao(): Dao
+
     companion object {
-        const val DATABASE_NAME = "app_database"
+        private const val DATABASE_NAME = "app_database"
         const val VERSION = 1
 
         private var instance: AppDatabase? = null

@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class PdfNoteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(FIELD_ID)
-    val id: Long? = null,
+    var id: Long? = null,
 
     @ColumnInfo(FIELD_TITLE)
     val title: String,
@@ -18,9 +18,9 @@ data class PdfNoteEntity(
     @ColumnInfo(FIELD_ABOUT)
     val about: String?,
     @ColumnInfo(FIELD_TAG_ID)
-    val tagId: Int,
+    val tagId: Long?,
     @ColumnInfo(FIELD_UPDATED_AT)
-    val updateAt: String,
+    val updateAt: Long,
 ) {
 
 

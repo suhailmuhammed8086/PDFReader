@@ -9,8 +9,10 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.pdfnotemate.R
 import com.example.pdfnotemate.base.ui.BaseActivity
 import com.example.pdfnotemate.databinding.ActivityHomeBinding
+import com.example.pdfnotemate.ui.activity.add.AddPdfActivity
 import com.example.pdfnotemate.ui.fragment.MoreOptionModel
 import com.example.pdfnotemate.ui.fragment.OptionPickFragment
+import com.example.pdfnotemate.utils.BundleArguments
 
 class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Listener {
     private lateinit var binding: ActivityHomeBinding
@@ -38,6 +40,18 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
         binding.btAddNewPdf.setOnClickListener(this)
 
 
+
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btAddNewPdf -> {
+                showAddOptions()
+            }
+        }
+    }
+
+    private fun showAddOptions() {
         val options = arrayListOf(
             MoreOptionModel(FROM_GALLERY, "Pick From Gallery"),
             MoreOptionModel(DOWNLOAD_PDF, "Download PDF")
@@ -50,14 +64,17 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
         )
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-
+    override fun onMoreOptionSelected(option: MoreOptionModel) {
+        launchTo(AddPdfActivity::class.java){
+            val pageType = if (option.id == FROM_GALLERY) {
+                AddPdfActivity.PageType.PickFromGallery
+            } else {
+                AddPdfActivity.PageType.DownloadPdf
+            }
+            it.putString(BundleArguments.ARGS_PAGE_TYPE, pageType.name)
         }
     }
 
-    override fun onMoreOptionSelected(option: MoreOptionModel) {
 
-    }
 
 }

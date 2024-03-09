@@ -12,7 +12,7 @@
         android:fontFamily="@font/jakarta_sans_medium_500"
         android:paddingHorizontal="15dp"
         android:paddingVertical="10dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18sp"
         tools:text="Option text" />
 

@@ -3,26 +3,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/second_color"
     android:orientation="vertical"
-    android:paddingHorizontal="15dp"
-    android:paddingTop="20dp"
     tools:context=".ui.fragment.OptionPickFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/jakarta_sans_bold_700"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        tools:text="Title" />
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:background="@color/second_color"
+        android:paddingHorizontal="15dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/jakarta_sans_bold_700"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            tools:text="Title" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="40dp"
+            android:id="@+id/btClose"
+            android:minHeight="40dp"
+            android:src="@drawable/ic_close_white" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOptions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="15dp"
         tools:listitem="@layout/adapter_more_option" />
 
 

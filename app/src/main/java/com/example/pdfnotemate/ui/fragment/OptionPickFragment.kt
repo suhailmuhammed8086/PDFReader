@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pdfnotemate.R
 import com.example.pdfnotemate.adapter.MoreOptionsAdapter
 import com.example.pdfnotemate.databinding.FragmentOptionPickBinding
+import com.example.pdfnotemate.utils.getParcelableArrayListVs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.parcelize.Parcelize
 
@@ -61,7 +62,7 @@ class OptionPickFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentOptionPickBinding.inflate(inflater,container,false)
         return binding.root
@@ -75,10 +76,13 @@ class OptionPickFragment : BottomSheetDialogFragment() {
             adapter = this@OptionPickFragment.adapter
             layoutManager = LinearLayoutManager(activity)
         }
+
+        binding.btClose.setOnClickListener { dismiss() }
     }
 
     private fun onOptionClicked(selectedOption: MoreOptionModel){
         listener?.onMoreOptionSelected(selectedOption)
+        dismiss()
     }
 
     companion object {
@@ -105,16 +109,7 @@ class OptionPickFragment : BottomSheetDialogFragment() {
     }
 }
 
-private fun <T:Parcelable?>Bundle.getParcelableArrayListVs(
-    key: String,
-    java: Class<out T>
-): java.util.ArrayList<T>? {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        getParcelableArrayList(key,java)
-    }else {
-        getParcelableArrayList(key)
-    }
-}
+
 
 
 @Parcelize
