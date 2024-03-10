@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_color"
+
+    tools:context=".ui.activity.add.AddPdfActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/jakarta_sans_bold_700"
+            android:includeFontPadding="false"
+            android:text="Add PDF"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/white" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/pdfImportSuccessSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/jakarta_sans_bold_700"
+                android:includeFontPadding="false"
+                android:text="PDF"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/ic_pdf" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_thumbs_up"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/jakarta_sans_semibold_600"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="Imported"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/btRemovePdf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_17r_white"
+                        android:backgroundTint="@color/red"
+                        android:fontFamily="@font/jakarta_sans_medium_500"
+                        android:includeFontPadding="false"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="1dp"
+                        android:text="Remove"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/downloadSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/jakarta_sans_bold_700"
+                android:includeFontPadding="false"
+                android:text="PDF Url"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etPdfUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ripple_second_color_17r"
+
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/jakarta_sans_regular_400"
+                android:hint="@string/enter_pdf_url_here"
+                android:includeFontPadding="false"
+                android:minHeight="50dp"
+                android:paddingHorizontal="10dp"
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:id="@+id/btDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_17r_white"
+                android:backgroundTint="@color/second_color"
+                android:minWidth="100dp"
+                android:minHeight="48dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/jakarta_sans_semibold_600"
+                    android:includeFontPadding="false"
+                    android:text="@string/download"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <ProgressBar
+                    android:id="@+id/downloadProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:indeterminateTint="@color/white"
+                    android:max="100"
+                    android:progress="50"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/pickFromGallerySection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/jakarta_sans_bold_700"
+                android:includeFontPadding="false"
+                android:text="PDF"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btPickPdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_17r_white"
+                android:backgroundTint="@color/second_color"
+                android:fontFamily="@font/jakarta_sans_semibold_600"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:minWidth="100dp"
+                android:minHeight="48dp"
+                android:text="Pick PDF"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/jakarta_sans_bold_700"
+            android:includeFontPadding="false"
+            android:text="Title"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etPdfTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ripple_second_color_17r"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/jakarta_sans_regular_400"
+            android:hint="Enter Pdf title here"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:minHeight="50dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="15sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/jakarta_sans_bold_700"
+            android:includeFontPadding="false"
+            android:text="Tag"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ripple_second_color_17r"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/jakarta_sans_regular_400"
+            android:gravity="center_vertical"
+            android:hint="@string/add_tag"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:minHeight="50dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="15sp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/jakarta_sans_bold_700"
+            android:includeFontPadding="false"
+            android:text="@string/about_optional"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ripple_second_color_17r"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/jakarta_sans_regular_400"
+            android:gravity="center_vertical"
+            android:hint="Enter about the pdf"
+            android:includeFontPadding="false"
+            android:inputType="textMultiLine"
+            android:minHeight="50dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="15sp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btAddNewPdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ripple_second_color_17r"
+            android:fontFamily="@font/jakarta_sans_semibold_600"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:minHeight="50dp"
+            android:text="Add PDF"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.core.widget.NestedScrollView>

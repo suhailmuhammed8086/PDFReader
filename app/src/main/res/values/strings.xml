@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PDF NoteMate</string>
+    <string name="about_the_application">About the Application</string>
+    <string name="start">Start</string>
+    <string name="search_here">Search here</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="download">Download</string>
+    <string name="enter_pdf_url_here">Enter pdf url here</string>
+    <string name="enter_pdf_title_here">Enter Pdf title here</string>
+    <string name="add_tag">Add Tag</string>
+    <string name="about_optional">About (Optional)</string>
+</resources>
