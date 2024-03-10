@@ -12,6 +12,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:isScrollContainer="true"
         android:orientation="vertical"
         android:paddingHorizontal="20dp">
 
@@ -124,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/ripple_second_color_17r"
+                android:background="@drawable/background_17r_white"
 
                 android:backgroundTint="@color/white"
                 android:fontFamily="@font/jakarta_sans_regular_400"
@@ -224,7 +225,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/ripple_second_color_17r"
+            android:background="@drawable/background_17r_white"
             android:backgroundTint="@color/white"
             android:fontFamily="@font/jakarta_sans_regular_400"
             android:hint="Enter Pdf title here"
@@ -249,7 +250,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/ripple_second_color_17r"
+            android:background="@drawable/background_17r_white"
             android:backgroundTint="@color/white"
             android:fontFamily="@font/jakarta_sans_regular_400"
             android:gravity="center_vertical"
@@ -276,7 +277,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/ripple_second_color_17r"
+            android:background="@drawable/background_17r_white"
             android:backgroundTint="@color/white"
             android:fontFamily="@font/jakarta_sans_regular_400"
             android:gravity="center_vertical"

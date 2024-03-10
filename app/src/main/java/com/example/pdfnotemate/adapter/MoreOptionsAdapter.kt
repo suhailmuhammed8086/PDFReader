@@ -7,8 +7,8 @@ import com.example.pdfnotemate.databinding.AdapterMoreOptionBinding
 import com.example.pdfnotemate.ui.fragment.MoreOptionModel
 
 class MoreOptionsAdapter(
-    val moreOptions: List<MoreOptionModel>,
-    val onOptionClicked: (option: MoreOptionModel) -> Unit
+    private val moreOptions: List<MoreOptionModel>,
+    private val onOptionClicked: (option: MoreOptionModel) -> Unit
 ) : RecyclerView.Adapter<MoreOptionsAdapter.ViewHolder>() {
 
 

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="10dp"
+    android:background="@drawable/background_17r_white"
+    android:elevation="10dp"
+    android:orientation="horizontal">
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical"
+        android:paddingVertical="10dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jakarta_sans_semibold_600"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="Pdf Name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/second_color"
+            android:fontFamily="@font/jakarta_sans_semibold_600"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            tools:text="Tag" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHighlightsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jakarta_sans_light_300"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:text="10 highlights" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCommentsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/jakarta_sans_light_300"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:text="10 Comments" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvBookmarksCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/jakarta_sans_light_300"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:text="10 Bookmarks" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

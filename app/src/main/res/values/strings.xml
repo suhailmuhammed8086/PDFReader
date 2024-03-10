@@ -10,4 +10,5 @@
     <string name="enter_pdf_title_here">Enter Pdf title here</string>
     <string name="add_tag">Add Tag</string>
     <string name="about_optional">About (Optional)</string>
+    <string name="you_don_t_have_any_pdf_notes_yet">You don\'t have any pdf notes yet</string>
 </resources>

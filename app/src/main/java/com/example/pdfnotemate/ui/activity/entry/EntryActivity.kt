@@ -28,6 +28,7 @@ class EntryActivity : BaseActivity(), View.OnClickListener {
 
     private fun initView() {
         binding.btStart.setOnClickListener(this)
+        binding.btStart.callOnClick()
     }
 
     override fun onClick(v: View?) {

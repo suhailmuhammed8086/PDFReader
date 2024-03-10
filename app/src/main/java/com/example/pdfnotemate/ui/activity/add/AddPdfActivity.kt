@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.net.toFile
 import com.example.pdfnotemate.R
 import com.example.pdfnotemate.base.ui.BaseActivity
 import com.example.pdfnotemate.databinding.ActivityAddPdfBinding
@@ -23,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileOutputStream
 
 @AndroidEntryPoint
 class AddPdfActivity : BaseActivity(), View.OnClickListener {
@@ -73,6 +73,7 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener {
 
         binding.btDownload.setOnClickListener(this)
         binding.btAddNewPdf.setOnClickListener(this)
+        binding.btPickPdf.setOnClickListener(this)
         binding.btRemovePdf.setOnClickListener(this)
 
         // showing download or pick section
@@ -86,6 +87,9 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btAddNewPdf-> {
                 addPdf()
+            }
+            R.id.btPickPdf-> {
+                pickPdfFromGallery()
             }
             R.id.btRemovePdf-> {
                 removePdf()
@@ -177,11 +181,17 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener {
     private fun onPdfPickResult(result: ActivityResult) {
         if (result.resultCode == RESULT_OK) {
             Log.e("TAG", "onPdfPickResult: ${result.data?.data}")
-            val file = result.data?.data?.toFile()
-            if (file != null) {
-                val saveFile = AppFileManager.getNewPdfFile(this)
-                file.copyTo(saveFile, overwrite = true)
-                viewModel.pdfFile = saveFile
+            val uri = result.data?.data
+            if (uri != null) {
+                contentResolver?.openInputStream(uri)?.use {input->
+                    val saveFile = AppFileManager.getNewPdfFile(this)
+                    FileOutputStream(saveFile).use {
+                        input.copyTo(it)
+                    }
+                    viewModel.pdfFile = saveFile
+                    showOrHideAddSection(false)
+                    binding.pdfImportSuccessSection.visibility = View.VISIBLE
+                }
             }
         }
     }
