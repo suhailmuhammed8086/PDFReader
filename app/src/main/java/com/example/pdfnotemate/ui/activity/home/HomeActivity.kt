@@ -1,25 +1,47 @@
 package com.example.pdfnotemate.ui.activity.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.pdfnotemate.R
 import com.example.pdfnotemate.base.ui.BaseActivity
 import com.example.pdfnotemate.databinding.ActivityHomeBinding
+import com.example.pdfnotemate.model.PdfNotesResponse
+import com.example.pdfnotemate.state.ResponseState
 import com.example.pdfnotemate.ui.activity.add.AddPdfActivity
 import com.example.pdfnotemate.ui.fragment.MoreOptionModel
 import com.example.pdfnotemate.ui.fragment.OptionPickFragment
+import com.example.pdfnotemate.utils.Alerts
 import com.example.pdfnotemate.utils.BundleArguments
+import com.example.pdfnotemate.utils.log
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Listener {
     private lateinit var binding: ActivityHomeBinding
+    private val viewModel : HomeViewModel by viewModels()
 
     companion object {
         private const val FROM_GALLERY = 1
         private const val DOWNLOAD_PDF = 2
+    }
+
+    private var addPdfLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == RESULT_OK) {
+            if (it.data?.action == AddPdfActivity.RESULT_ACTION_PDF_ADDED) {
+                Alerts.successSnackBar(binding.root, "Note added successfully.")
+                viewModel.getAllPdfs()
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +56,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
         }
 
         initView()
+        viewModel.getAllPdfs()
     }
 
     private fun initView() {
@@ -51,6 +74,27 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
         }
     }
 
+    override fun bindUI() =  launch(Dispatchers.Main) {
+        viewModel.pdfListResponse.state.observe(this@HomeActivity) {state->
+            when (state) {
+                is ResponseState.Failed -> {
+
+                }
+                ResponseState.Loading -> {
+
+                }
+                is ResponseState.Success<*> -> {
+                    val notes = state.response as PdfNotesResponse
+                    notes.log("notes")
+                }
+                is ResponseState.ValidationError -> {
+
+                }
+            }
+        }
+    }
+
+
     private fun showAddOptions() {
         val options = arrayListOf(
             MoreOptionModel(FROM_GALLERY, "Pick From Gallery"),
@@ -65,14 +109,14 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
     }
 
     override fun onMoreOptionSelected(option: MoreOptionModel) {
-        launchTo(AddPdfActivity::class.java){
-            val pageType = if (option.id == FROM_GALLERY) {
-                AddPdfActivity.PageType.PickFromGallery
-            } else {
-                AddPdfActivity.PageType.DownloadPdf
-            }
-            it.putString(BundleArguments.ARGS_PAGE_TYPE, pageType.name)
+        val launchIntent = Intent(this, AddPdfActivity::class.java)
+        val pageType = if (option.id == FROM_GALLERY) {
+            AddPdfActivity.PageType.PickFromGallery
+        } else {
+            AddPdfActivity.PageType.DownloadPdf
         }
+        launchIntent.putExtra(BundleArguments.ARGS_PAGE_TYPE, pageType.name)
+        addPdfLauncher.launch(launchIntent)
     }
 
 

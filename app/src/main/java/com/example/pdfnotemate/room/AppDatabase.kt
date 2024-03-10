@@ -9,7 +9,7 @@ import com.example.pdfnotemate.room.entity.PdfNoteEntity
 import com.example.pdfnotemate.room.entity.PdfTagEntity
 
 @Database([PdfNoteEntity::class, PdfTagEntity::class], version = AppDatabase.VERSION)
-@TypeConverters(TypeConverter::class)
+//@TypeConverters(TypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getDao(): Dao

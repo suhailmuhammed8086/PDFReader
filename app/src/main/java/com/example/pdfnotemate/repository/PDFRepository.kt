@@ -10,4 +10,6 @@ interface PDFRepository {
         about: String?,
         tagId: Long?
     ) : ResponseState
+
+    suspend fun getAllPdfs(): ResponseState
 }

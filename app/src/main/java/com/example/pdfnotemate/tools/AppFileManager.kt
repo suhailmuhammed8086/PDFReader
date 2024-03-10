@@ -18,13 +18,13 @@ object AppFileManager {
     fun getRandomFileName(ext: String? = null): String {
         var name = UUID.randomUUID().toString().replace("-", "")
         if (!ext.isNullOrEmpty()) {
-            name += ".$ext"
+            name += "$ext"
         }
         return name
     }
 
     fun getNewPdfFile(context: Context): File {
-        return File(getPdfNoteFolder(context), getRandomFileName("pdf"))
+        return File(getPdfNoteFolder(context), getRandomFileName(".pdf"))
     }
 
 

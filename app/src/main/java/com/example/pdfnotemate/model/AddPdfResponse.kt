@@ -1,9 +1,9 @@
 package com.example.pdfnotemate.model
 
-class AddPdfResponse (
-    val pdfDetails: PdfNoteListModel
-)
 
+data class PdfNotesResponse(
+    val notes : List<PdfNoteListModel>
+)
 
 data class PdfNoteListModel(
     val id: Long,

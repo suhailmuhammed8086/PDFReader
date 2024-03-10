@@ -65,16 +65,10 @@ dependencies {
 
 
 
-//    // Room database
+ // Room database
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
-//    implementation(libs.room.compiler)
-//
-//
-//   // Hilt
-//    kapt (libs.dagger.hilt.kapt)
-//    kapt
-//    implementation(libs.dagger.hilt.android)
+    kapt(libs.room.compiler)
 
     //OkHttpConnection
     implementation(libs.okhttp.urlconnection)

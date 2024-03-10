@@ -1,6 +1,7 @@
 package com.example.pdfnotemate.repository
 
 import com.example.pdfnotemate.model.PdfNoteListModel
+import com.example.pdfnotemate.model.PdfNotesResponse
 import com.example.pdfnotemate.model.TagModel
 import com.example.pdfnotemate.room.Dao
 import com.example.pdfnotemate.room.entity.PdfNoteEntity
@@ -46,6 +47,30 @@ class PdfRepositoryImpl @Inject constructor(
                     return@withContext ResponseState.Success<PdfNoteListModel>(model)
                 }
                 throw java.lang.Exception("Failed to add pdf")
+            } catch (e: Exception) {
+                return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
+            }
+        }
+    }
+
+    override suspend fun getAllPdfs(): ResponseState {
+        return withContext(Dispatchers.IO) {
+            try {
+               val notes = dao.getAllPdfNotes()
+                val pdfNotes = notes.map {
+                    val tagModel = it.tagId?.let {tagId-> dao.getTagById(tagId) }?.let { tag->
+                        TagModel(tag.id ?: -1, tag.title, tag.colorCode)
+                    }
+                    PdfNoteListModel(
+                        it.id?:-1,
+                        it.title,
+                        tagModel,
+                        it.about,
+                        it.updateAt
+                    )
+                }
+                return@withContext ResponseState.Success<PdfNotesResponse>(PdfNotesResponse(pdfNotes))
+
             } catch (e: Exception) {
                 return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
             }

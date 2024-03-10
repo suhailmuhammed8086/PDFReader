@@ -20,14 +20,17 @@ object FileDownloadTool {
                 val request = Request.Builder()
                     .url(url)
                     .build()
-
-                callback?.onDownloadStart()
+                withContext(Dispatchers.Main) {
+                    callback?.onDownloadStart()
+                }
                 val response = client.newCall(request).execute()
 
                 val tempFile = File.createTempFile("PdfDownload","pdf")
 
                 if (!response.isSuccessful) {
-                    callback?.onDownloadFailed(response.message())
+                    withContext(Dispatchers.Main) {
+                        callback?.onDownloadFailed(response.message())
+                    }
                     return@withContext
                 }
 
@@ -45,7 +48,9 @@ object FileDownloadTool {
 
                     // updating progress.
                     val progress = (totalBytesRead.toDouble()/ contentLength) * 100
-                    callback?.onDownloading(progress)
+                    withContext(Dispatchers.Main) {
+                        callback?.onDownloading(progress)
+                    }
                 }
 
                 // creating permanent file
@@ -53,6 +58,7 @@ object FileDownloadTool {
                 if (!name.uppercase().endsWith(".PDF")) {
                     name+=".pdf"
                 }
+                name = AppFileManager.getRandomFileName(".pdf")
                 val saveFile = File(saveFileFolder, name)
                 // Moving data to permanent file
                 if (tempFile.exists()) {
@@ -61,12 +67,20 @@ object FileDownloadTool {
                             inStream.copyTo(it)
                         }
                     }
-
-                    callback?.onDownloadCompleted(saveFile)
+                    withContext(Dispatchers.Main) {
+                        callback?.onDownloadCompleted(saveFile)
+                    }
+                    tempFile.delete()
+                    return@withContext
                 }
-                callback?.onDownloadFailed("Failed to save PDF")
+                tempFile.delete()
+                withContext(Dispatchers.Main) {
+                    callback?.onDownloadFailed("Failed to save PDF")
+                }
             } catch (e: Exception) {
-                callback?.onDownloadFailed(e.message)
+                withContext(Dispatchers.Main) {
+                    callback?.onDownloadFailed(e.message)
+                }
                 return@withContext
             }
         }
