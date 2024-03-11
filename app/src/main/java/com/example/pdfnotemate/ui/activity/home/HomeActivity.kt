@@ -19,6 +19,7 @@ import com.example.pdfnotemate.model.PdfNoteListModel
 import com.example.pdfnotemate.model.PdfNotesResponse
 import com.example.pdfnotemate.state.ResponseState
 import com.example.pdfnotemate.ui.activity.add.AddPdfActivity
+import com.example.pdfnotemate.ui.activity.reader.PdfReaderActivity
 import com.example.pdfnotemate.ui.fragment.MoreOptionModel
 import com.example.pdfnotemate.ui.fragment.OptionPickFragment
 import com.example.pdfnotemate.utils.Alerts
@@ -88,7 +89,9 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
     }
 
     override fun onPdfItemClicked(pdf: PdfNoteListModel) {
-
+        launchTo(PdfReaderActivity::class.java){
+            it.putParcelable(BundleArguments.ARGS_PDF_DETAILS,pdf)
+        }
     }
 
     override fun onPdfItemLongClicked(pdf: PdfNoteListModel) {

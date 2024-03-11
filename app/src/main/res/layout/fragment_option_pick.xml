@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.fragment.OptionPickFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -34,12 +35,6 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOptions"

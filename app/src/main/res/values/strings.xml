@@ -11,4 +11,7 @@
     <string name="add_tag">Add Tag</string>
     <string name="about_optional">About (Optional)</string>
     <string name="you_don_t_have_any_pdf_notes_yet">You don\'t have any pdf notes yet</string>
+    <string name="add_comment">Add comment</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
 </resources>

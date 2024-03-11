@@ -14,6 +14,7 @@ data class PdfNoteListModel(
     val title: String,
     val tag: TagModel?,
     val about: String?,
+    val filePath: String,
     val updatedTime: Long,
     val highlights: Int,
     val comments: Int,

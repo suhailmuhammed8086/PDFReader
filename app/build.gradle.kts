@@ -83,6 +83,13 @@ dependencies {
     // LiveData
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
+    //Pdf libraries
+    implementation(libs.pdfbox.android)
+    implementation (libs.pdfium.android)
+
+    //Gson
+    implementation(libs.gson)
+
 }
 
 // Allow references to generated code

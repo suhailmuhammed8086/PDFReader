@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/second_color"
+            android:background="@color/main_color"
             android:gravity="center_vertical"
             android:minHeight="100dp"
             android:orientation="vertical"
@@ -50,7 +50,7 @@
                     android:background="@null"
                     android:padding="10dp"
                     android:src="@drawable/ic_filter"
-                    android:tint="@color/second_color" />
+                    android:tint="@color/main_color" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.CommentViewFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/second_color"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="15dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/jakarta_sans_bold_700"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="Comment" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btEditNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="30dp"
+            android:minHeight="30dp"
+            android:src="@drawable/ic_edit" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btDeleteNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:minWidth="30dp"
+            android:minHeight="30dp"
+            android:src="@drawable/ic_delete" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:minWidth="30dp"
+            android:minHeight="30dp"
+            android:src="@drawable/ic_close_white" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:id="@+id/tvSnippet"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/jakarta_sans_light_300"
+        android:maxLines="3"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        tools:text="snippet" />
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:background="@drawable/background_5r_white_with_black_stroke"
+        android:fontFamily="@font/jakarta_sans_regular_400"
+        android:gravity="start"
+        android:hint="Enter comment here"
+        android:includeFontPadding="false"
+        android:minHeight="50dp"
+        android:minLines="5"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:textSize="15sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ripple_second_color_17r"
+        android:fontFamily="@font/jakarta_sans_semibold_600"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:minHeight="50dp"
+        android:text="@string/add_comment"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

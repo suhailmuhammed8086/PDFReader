@@ -1,5 +1,6 @@
 package com.example.pdfnotemate.utils
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
@@ -13,6 +14,26 @@ fun <T : Parcelable?> Bundle.getParcelableArrayListVs(
         getParcelableArrayList(key, java)
     } else {
         getParcelableArrayList(key)
+    }
+}
+fun <T : Parcelable?> Intent.getParcelableExtraVs(
+    key: String,
+    java: Class<out T>
+): T? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getParcelableExtra(key,java)
+    } else {
+        getParcelableExtra(key)
+    }
+}
+fun <T : Parcelable?> Bundle.getParcelableVs(
+    key: String,
+    java: Class<out T>
+): T? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getParcelable(key,java)
+    } else {
+        getParcelable(key)
     }
 }
 
