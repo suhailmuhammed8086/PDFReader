@@ -34,6 +34,7 @@ class TagFragment : ScopedBottomSheetFragment(), View.OnClickListener, TagsAdapt
 
     interface Listener {
         fun onTagSelected(tagModel: TagModel)
+        fun onTagRemoved(tagId: Long)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,6 +131,7 @@ class TagFragment : ScopedBottomSheetFragment(), View.OnClickListener, TagsAdapt
                     if (response != null){
                         tags.add(response)
                         tagAdapter?.notifyDataSetChanged()
+                        binding.etTagName.setText("")
                     }
                 }
                 is ResponseState.ValidationError -> {
@@ -148,6 +150,7 @@ class TagFragment : ScopedBottomSheetFragment(), View.OnClickListener, TagsAdapt
                     if (response != null){
                         tags.removeAll { it.id == response.tagId }
                         tagAdapter?.notifyDataSetChanged()
+                        listener?.onTagRemoved(response.tagId)
                     }
                 }
                 is ResponseState.ValidationError -> {

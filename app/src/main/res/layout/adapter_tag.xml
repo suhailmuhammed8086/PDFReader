@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/background_17r_white"
+    android:background="@drawable/background_5r_white"
+    android:backgroundTint="@color/second_color"
     android:elevation="2dp"
     android:gravity="center_vertical"
     android:orientation="horizontal">
@@ -16,10 +17,10 @@
         android:fontFamily="@font/jakarta_sans_medium_500"
         android:includeFontPadding="false"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="3dp"
+        android:paddingVertical="5dp"
         android:text="Tag name"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btRemoveTag"
@@ -29,7 +30,7 @@
         android:background="@null"
         android:padding="10dp"
         android:src="@drawable/ic_close_white"
-        android:tint="@color/black" />
+        android:tint="@color/white" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

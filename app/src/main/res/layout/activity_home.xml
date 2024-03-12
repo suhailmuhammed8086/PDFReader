@@ -4,28 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
+    android:background="@color/main_color"
     tools:context=".ui.activity.home.HomeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/main_color">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/main_color"
-            android:gravity="center_vertical"
-            android:minHeight="100dp"
             android:orientation="vertical"
-            android:paddingHorizontal="15dp">
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp">
+
+
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_arrow_back" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/jakarta_sans_semibold_600"
+                    android:includeFontPadding="false"
+                    android:text="Notes"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_17r_white"
+                android:layout_marginHorizontal="30dp"
+                android:background="@drawable/background_5r_white"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -35,31 +64,55 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:fontFamily="@font/jakarta_sans_medium_500"
-                    android:hint="@string/search_here"
+                    android:hint="Search by Name or Tag"
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:minHeight="50dp"
                     android:paddingHorizontal="15dp"
                     android:textColor="@color/black"
+                    android:textColorHint="@color/hint_color"
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btFilter"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@null"
                     android:padding="10dp"
-                    android:src="@drawable/ic_filter"
-                    android:tint="@color/main_color" />
+                    android:src="@drawable/ic_search_white"
+                    android:tint="@color/second_color" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btAddNewPdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/background_5r_white"
+                android:drawableEnd="@drawable/ic_add"
+                android:drawableTint="@color/black"
+                android:fontFamily="@font/jakarta_sans_semibold_600"
+                android:gravity="center"
+                android:layout_marginEnd="30dp"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:text="Add PDF"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+
+
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
 
@@ -84,26 +137,9 @@
             android:fontFamily="@font/jakarta_sans_semibold_600"
             android:includeFontPadding="false"
             android:text="@string/you_don_t_have_any_pdf_notes_yet"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:visibility="gone" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btAddNewPdf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/ripple_second_color_17r"
-            android:fontFamily="@font/jakarta_sans_semibold_600"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:minHeight="50dp"
-            android:text="Add PDF"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
 
     </RelativeLayout>
 

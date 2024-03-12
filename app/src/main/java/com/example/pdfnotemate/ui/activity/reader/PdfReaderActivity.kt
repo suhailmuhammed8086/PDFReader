@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.pdfnotemate.R
 import com.example.pdfnotemate.base.ui.BaseActivity
 import com.example.pdfnotemate.databinding.ActivityPdfReaderBinding
@@ -33,11 +32,8 @@ import com.example.pdfnotemate.utils.log
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.io.BufferedWriter
 import java.io.File
-import java.io.FileWriter
 
 @AndroidEntryPoint
 class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Listener, CommentViewFragment.Listener {
@@ -210,8 +206,12 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
 
         }
 
-        override fun onNotesStampsClicked(notes: List<CommentModel>, pointOfNote: PointF) {
+        override fun onNotesStampsClicked(comments: List<CommentModel>, pointOfNote: PointF) {
+            if (comments.size == 1) {
+                CommentViewFragment.showToCommentView(comments.first(),supportFragmentManager)
+            } else {
 
+            }
         }
 
         override fun loadTopPdfChunk(mergeId: Int, pageIndexToLoad: Int) {

@@ -2207,7 +2207,7 @@ class PDFView(context: Context?, set: AttributeSet?) :
 
         fun hideTextSelectionOptionWindow()
         fun onTextSelectionCleared()
-        fun onNotesStampsClicked(notes: List<CommentModel>, pointOfNote: PointF)
+        fun onNotesStampsClicked(comments: List<CommentModel>, pointOfNote: PointF)
         fun loadTopPdfChunk(mergeId: Int, pageIndexToLoad: Int)
         fun loadBottomPdfChunk(mergedId: Int, pageIndexToLoad: Int)
         fun onScrolling()

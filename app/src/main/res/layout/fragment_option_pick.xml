@@ -22,15 +22,15 @@
             android:layout_weight="1"
             android:fontFamily="@font/jakarta_sans_bold_700"
             android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textSize="18sp"
             tools:text="Title" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="40dp"
+            android:minWidth="30dp"
             android:id="@+id/btClose"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
             android:src="@drawable/ic_close_white" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -36,7 +36,19 @@ class TextSelectionOptionsWindow(
     private var optionContainer: LinearLayoutCompat? = null
     private var colorContainer: LinearLayoutCompat? = null
 
-    private val colorsList = listOf("#00DCD6", "#2B65F9", "#8C6BF8", "#FF5833", "#FFCC25", CLOSE_ICON_ID)
+    private val colorsList = listOf(
+        "#FFFF00",
+        "#00FF00",
+        "#0000FF",
+        "#FFA500",
+        "#FFC0CB",
+        "#800080",
+        "#00FFFF",
+        "#FF0000",
+        "#008080",
+        "#E6E6FA",
+        CLOSE_ICON_ID
+    )
     private var colorOptionSize = 50
     private var selectedTextData: TextSelectionData? = null
 

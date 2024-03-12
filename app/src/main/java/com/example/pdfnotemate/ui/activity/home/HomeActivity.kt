@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pdfnotemate.R
 import com.example.pdfnotemate.adapter.PdfListAdapter
@@ -39,6 +40,7 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
 
     private var adapter: PdfListAdapter? = null
     private var pdfList = arrayListOf<PdfNoteListModel>()
+    private var pdfListAll = arrayListOf<PdfNoteListModel>()
 
     companion object {
         private const val FROM_GALLERY = 1
@@ -72,16 +74,23 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
 
     private fun initView() {
         binding.btAddNewPdf.setOnClickListener(this)
+        binding.btBack.setOnClickListener(this)
         adapter = PdfListAdapter(pdfList, this)
         binding.rvPdfList.apply {
             adapter = this@HomeActivity.adapter
             layoutManager = LinearLayoutManager(this@HomeActivity)
         }
 
+        binding.etSearch.doAfterTextChanged {
+            filterPdfList(it?.toString())
+        }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.btBack -> {
+                finish()
+            }
             R.id.btAddNewPdf -> {
                 showAddOptions()
             }
@@ -116,8 +125,10 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
                     val pdfListResponse = state.response as PdfNotesResponse?
 
                     if (pdfListResponse != null) {
+                        pdfListAll.clear()
+                        pdfListAll.addAll(pdfListResponse.notes)
                         pdfList.clear()
-                        pdfList.addAll(pdfListResponse.notes)
+                        pdfList.addAll(pdfListAll)
                     }
                     pdfList.size.log("pdf size")
                     adapter?.notifyDataSetChanged()
@@ -133,6 +144,26 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
 
                 }
             }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun filterPdfList(key: String?) {
+        pdfList.clear()
+        if (key.isNullOrEmpty()) {
+            pdfList.addAll(pdfListAll)
+        } else {
+            pdfList.addAll(pdfListAll.filter {
+                it.title.uppercase().contains(key.uppercase()) ||
+                        it.tag?.title?.uppercase()?.contains(key.uppercase()) ?: false
+            })
+        }
+        adapter?.notifyDataSetChanged()
+
+        if (pdfList.isEmpty()) {
+            setError("You don't have note with that details")
+        } else {
+            setError(null)
         }
     }
 

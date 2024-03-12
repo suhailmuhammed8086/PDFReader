@@ -9,12 +9,13 @@ import com.example.pdfnotemate.databinding.AdapterMoreOptionBinding
 import com.example.pdfnotemate.databinding.AdapterPdfListBinding
 import com.example.pdfnotemate.model.PdfNoteListModel
 import com.example.pdfnotemate.ui.fragment.MoreOptionModel
+import com.example.pdfnotemate.utils.TagColors
 
 class PdfListAdapter(
     private val pdfs: List<PdfNoteListModel>,
     private val listener: Listener
 ) : RecyclerView.Adapter<PdfListAdapter.ViewHolder>() {
-
+    private val tagColor = TagColors()
 
     interface Listener {
         fun onPdfItemClicked(pdf: PdfNoteListModel)
@@ -39,10 +40,10 @@ class PdfListAdapter(
         } else {
             holder.binding.tvTag.visibility = View.VISIBLE
             holder.binding.tvTag.text = item.tag?.title
+            holder.binding.tvTag.setBackgroundColor(tagColor.getColor(item.tag?.id?:-1L))
         }
-        holder.binding.tvHighlightsCount.text = item.highlights.toString().plus(" Highlights")
-        holder.binding.tvCommentsCount.text = item.comments.toString().plus(" Comments")
-        holder.binding.tvBookmarksCount.text = item.highlights.toString().plus(" Bookmarks")
+        holder.binding.tvAbout.text = item.about ?: ""
+
 
         holder.binding.root.setOnClickListener { listener.onPdfItemClicked(item) }
         holder.binding.root.setOnLongClickListener { listener.onPdfItemClicked(item);true }

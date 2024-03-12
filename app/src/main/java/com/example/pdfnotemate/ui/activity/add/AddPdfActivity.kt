@@ -2,12 +2,13 @@ package com.example.pdfnotemate.ui.activity.add
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.pdfnotemate.R
 import com.example.pdfnotemate.base.ui.BaseActivity
 import com.example.pdfnotemate.databinding.ActivityAddPdfBinding
@@ -55,11 +56,11 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener, TagFragment.Listene
         enableEdgeToEdge()
         binding = ActivityAddPdfBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         getDataFromIntent()
         initView()
@@ -73,6 +74,7 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener, TagFragment.Listene
             binding.downloadProgress
         )
 
+        binding.btBack.setOnClickListener(this)
         binding.btDownload.setOnClickListener(this)
         binding.btAddNewPdf.setOnClickListener(this)
         binding.btPickPdf.setOnClickListener(this)
@@ -87,6 +89,9 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener, TagFragment.Listene
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.btBack-> {
+                finish()
+            }
             R.id.btDownload-> {
                 downloadPdf()
             }
@@ -119,6 +124,12 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener, TagFragment.Listene
         viewModel.selectedTag = tagModel
         binding.tvTag.text = tagModel.title
         binding.btRemoveTag.visibility = View.VISIBLE
+    }
+
+    override fun onTagRemoved(tagId: Long) {
+        if (viewModel.selectedTag?.id == tagId) {
+            removeTag()
+        }
     }
 
     private fun removeTag(){
@@ -202,7 +213,6 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener, TagFragment.Listene
 
     private fun onPdfPickResult(result: ActivityResult) {
         if (result.resultCode == RESULT_OK) {
-            Log.e("TAG", "onPdfPickResult: ${result.data?.data}")
             val uri = result.data?.data
             if (uri != null) {
                 contentResolver?.openInputStream(uri)?.use {input->

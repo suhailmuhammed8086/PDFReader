@@ -15,10 +15,7 @@ data class PdfNoteListModel(
     val tag: TagModel?,
     val about: String?,
     val filePath: String,
-    val updatedTime: Long,
-    val highlights: Int,
-    val comments: Int,
-    val bookmarks:Int
+    val updatedTime: Long
 ): Parcelable
 
 @Parcelize

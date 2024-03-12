@@ -2,6 +2,8 @@ package com.example.pdfnotemate.tools.pdf.viewer.annotation
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -23,14 +25,14 @@ class PdfAnnotationHandler(
     var annotations = arrayListOf<PdfAnnotationModel>()
     private var noteColor = Color.parseColor("#FA5D3B") // note underline color
 
-//    private var noteStampBitmap: Bitmap = BitmapFactory.decodeResource(resource, R.drawable.ic_note_stamp)
+    private var noteStampBitmap: Bitmap = BitmapFactory.decodeResource(resource, R.drawable.ic_note_stamp)
     private var stampWidth = 35f
     private var stampHeight = 35f
     private var stampX = 0f
     private var addedNoteStampDetails = HashMap<Int, List<AddedStampDetails>>()
 
     init {
-        stampWidth = getDpValue(resource, 27f).toFloat()
+        stampWidth = getDpValue(resource, 20f).toFloat()
         stampHeight = stampWidth
     }
 
@@ -43,7 +45,7 @@ class PdfAnnotationHandler(
         style = Paint.Style.FILL_AND_STROKE
     }
 
-    val textSize = getDpValue(resource, 10f)
+    val textSize = getDpValue(resource, 8f)
     val textPaint = Paint().apply {
         color = Color.WHITE
         typeface = context?.let { ResourcesCompat.getFont(it, R.font.jakarta_sans_regular_400) }
@@ -121,7 +123,7 @@ class PdfAnnotationHandler(
     private fun drawNoteStamp(canvas: Canvas, y: Float, zoom: Float, count: Int) {
         val my = y - stampHeight / 2 // to make the stamp vertically center to the line
         val destRect = RectF(stampX, my, stampX + stampWidth, my + stampHeight).zoom(zoom)
-//        canvas.drawBitmap(noteStampBitmap, null, destRect, Paint())
+        canvas.drawBitmap(noteStampBitmap, null, destRect, Paint())
 
         if (count > 1) {
             // draw count on the stamp

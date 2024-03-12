@@ -14,7 +14,7 @@
         android:paddingHorizontal="15dp"
         android:paddingVertical="10dp"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="14sp"
         tools:text="Option text" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

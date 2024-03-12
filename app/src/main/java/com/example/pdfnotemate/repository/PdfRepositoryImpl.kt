@@ -55,7 +55,7 @@ class PdfRepositoryImpl @Inject constructor(
                         tagModel,
                         about,
                         filePath,
-                        pdfEntry.updateAt,0,0,0
+                        pdfEntry.updateAt
                     )
                     return@withContext ResponseState.Success<PdfNoteListModel>(model)
                 }
@@ -80,7 +80,7 @@ class PdfRepositoryImpl @Inject constructor(
                         tagModel,
                         it.about,
                         it.filePath,
-                        it.updateAt,0,0,0
+                        it.updateAt
                     )
                 }
                 return@withContext ResponseState.Success<PdfNotesResponse>(PdfNotesResponse(pdfNotes))
