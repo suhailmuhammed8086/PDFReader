@@ -17,6 +17,8 @@ interface PDFRepository {
 
     // TAG
     suspend fun addTag(title: String, color: String) : ResponseState
+    suspend fun getAllTags() : ResponseState
+    suspend fun removeTagById(tagId: Long) : ResponseState
 
     // COMMENTS
     suspend fun addComment(

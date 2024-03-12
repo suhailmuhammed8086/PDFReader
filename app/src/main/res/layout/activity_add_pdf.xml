@@ -226,7 +226,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/background_17r_white"
-
             android:backgroundTint="@color/white"
             android:fontFamily="@font/jakarta_sans_regular_400"
             android:hint="Enter Pdf title here"
@@ -247,23 +246,43 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTag"
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/background_17r_white"
-
             android:backgroundTint="@color/white"
-            android:fontFamily="@font/jakarta_sans_regular_400"
             android:gravity="center_vertical"
-            android:hint="@string/add_tag"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:minHeight="50dp"
-            android:paddingHorizontal="10dp"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/jakarta_sans_regular_400"
+                android:gravity="center_vertical"
+                android:hint="@string/add_tag"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:minHeight="50dp"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btRemoveTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/background_full_round_white"
+                android:backgroundTint="@color/second_color"
+                android:padding="5dp"
+                android:src="@drawable/ic_close_white" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         <androidx.appcompat.widget.AppCompatTextView

@@ -24,6 +24,10 @@ interface Dao {
     suspend fun addPdfTag(tag: PdfTagEntity): Long
     @Query(Queries.GET_TAG_BY_TAG_ID)
     suspend fun getTagById(tagId:Long): PdfTagEntity?
+    @Query(Queries.GET_ALL_TAGS)
+    suspend fun getAllTags(): List<PdfTagEntity>
+    @Query(Queries.REMOVE_TAG_BY_ID)
+    suspend fun removeTagById(tagId: Long)
 
     // COMMENTS
     @Insert(onConflict = OnConflictStrategy.REPLACE)

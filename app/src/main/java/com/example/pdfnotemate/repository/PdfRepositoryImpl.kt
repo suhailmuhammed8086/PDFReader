@@ -1,9 +1,11 @@
 package com.example.pdfnotemate.repository
 
+import com.example.pdfnotemate.data.ValidationErrorException
 import com.example.pdfnotemate.model.AnnotationListResponse
 import com.example.pdfnotemate.model.DeleteAnnotationResponse
 import com.example.pdfnotemate.model.PdfNoteListModel
 import com.example.pdfnotemate.model.PdfNotesResponse
+import com.example.pdfnotemate.model.RemoveTagResponse
 import com.example.pdfnotemate.model.TagModel
 import com.example.pdfnotemate.room.Dao
 import com.example.pdfnotemate.room.entity.BookmarkEntity
@@ -92,9 +94,37 @@ class PdfRepositoryImpl @Inject constructor(
     override suspend fun addTag(title: String, color: String): ResponseState {
         return withContext(Dispatchers.IO) {
             try {
+                val allTags = dao.getAllTags()
+                val alreadyExistName = allTags.indexOfFirst { it.title == title } != -1
+                if (alreadyExistName) {
+                    throw ValidationErrorException(1,"There is already a Tag exist with the same name")
+                }
+
                 val tagEntity = PdfTagEntity(null,title,color)
                 val id = dao.addPdfTag(tagEntity)
                 return@withContext ResponseState.Success<TagModel>(TagModel(id,title,color))
+            } catch (e: Exception) {
+                return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
+            }
+        }
+    }
+    override suspend fun getAllTags(): ResponseState {
+        return withContext(Dispatchers.IO) {
+            try {
+                val tags = dao.getAllTags().map {
+                    TagModel(it.id?:-1,it.title,it.colorCode)
+                }
+                return@withContext ResponseState.Success<List<TagModel>>(tags)
+            } catch (e: Exception) {
+                return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
+            }
+        }
+    }
+    override suspend fun removeTagById(tagId: Long): ResponseState {
+        return withContext(Dispatchers.IO) {
+            try {
+                dao.removeTagById(tagId)
+                return@withContext ResponseState.Success<RemoveTagResponse>(RemoveTagResponse(tagId))
             } catch (e: Exception) {
                 return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
             }

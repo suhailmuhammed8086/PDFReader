@@ -90,6 +90,9 @@ dependencies {
     //Gson
     implementation(libs.gson)
 
+    //Flex Layout
+    implementation(libs.flexbox)
+
 }
 
 // Allow references to generated code

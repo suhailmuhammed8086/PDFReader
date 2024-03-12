@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pdfnotemate.data.ValidationErrorException
+import com.example.pdfnotemate.model.TagModel
 import com.example.pdfnotemate.repository.PDFRepository
 import com.example.pdfnotemate.state.ResponseState
 import com.example.pdfnotemate.tools.FileDownloadTool
@@ -20,6 +21,7 @@ class AddPdfViewModel @Inject constructor(
     private val pdfRepository: PDFRepository
 ) : ViewModel() {
     var pdfFile: File? = null
+    var selectedTag : TagModel? = null
 
     var pdfAddResponse = OperationsStateHandler(viewModelScope)
 
@@ -36,7 +38,6 @@ class AddPdfViewModel @Inject constructor(
     fun addPdf(
         title: String,
         about: String?,
-        tagId: Long?
     ) {
         pdfAddResponse.load {
             validation(title, pdfFile?.absolutePath)
@@ -44,7 +45,7 @@ class AddPdfViewModel @Inject constructor(
                 pdfFile?.absolutePath ?: "",
                 title,
                 about,
-                tagId
+                selectedTag?.id
             )
         }
     }

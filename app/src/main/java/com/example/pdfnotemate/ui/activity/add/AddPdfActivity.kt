@@ -12,9 +12,11 @@ import com.example.pdfnotemate.R
 import com.example.pdfnotemate.base.ui.BaseActivity
 import com.example.pdfnotemate.databinding.ActivityAddPdfBinding
 import com.example.pdfnotemate.model.PdfNoteListModel
+import com.example.pdfnotemate.model.TagModel
 import com.example.pdfnotemate.state.ResponseState
 import com.example.pdfnotemate.tools.AppFileManager
 import com.example.pdfnotemate.tools.FileDownloadTool
+import com.example.pdfnotemate.ui.fragment.tag.TagFragment
 import com.example.pdfnotemate.utils.Alerts
 import com.example.pdfnotemate.utils.BundleArguments
 import com.example.pdfnotemate.utils.ProgressButtonHelper
@@ -25,7 +27,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 @AndroidEntryPoint
-class AddPdfActivity : BaseActivity(), View.OnClickListener {
+class AddPdfActivity : BaseActivity(), View.OnClickListener, TagFragment.Listener {
 
     private val viewModel: AddPdfViewModel by viewModels()
     private lateinit var binding: ActivityAddPdfBinding
@@ -75,7 +77,8 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener {
         binding.btAddNewPdf.setOnClickListener(this)
         binding.btPickPdf.setOnClickListener(this)
         binding.btRemovePdf.setOnClickListener(this)
-
+        binding.tvTag.setOnClickListener(this)
+        binding.btRemoveTag.setOnClickListener(this)
         // showing download or pick section
         showOrHideAddSection(true)
 
@@ -96,6 +99,12 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener {
             R.id.btRemovePdf-> {
                 removePdf()
             }
+            R.id.tvTag-> {
+                TagFragment.show(supportFragmentManager)
+            }
+            R.id.btRemoveTag-> {
+                removeTag()
+            }
         }
     }
 
@@ -106,11 +115,22 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    override fun onTagSelected(tagModel: TagModel) {
+        viewModel.selectedTag = tagModel
+        binding.tvTag.text = tagModel.title
+        binding.btRemoveTag.visibility = View.VISIBLE
+    }
+
+    private fun removeTag(){
+        viewModel.selectedTag = null
+        binding.tvTag.text = ""
+        binding.btRemoveTag.visibility = View.GONE
+    }
+
     private fun addPdf() {
         viewModel.addPdf(
             binding.etPdfTitle.text.toString().trim(),
             binding.etAbout.text.toString().trim(),
-            null
         )
     }
 

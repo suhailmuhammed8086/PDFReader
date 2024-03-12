@@ -13,6 +13,11 @@ object Queries {
     // TAG
     const val GET_TAG_BY_TAG_ID =
         "SELECT * FROM ${PdfTagEntity.TABLE_NAME} WHERE ${PdfTagEntity.FIELD_ID} = :tagId"
+    const val GET_ALL_TAGS =
+        "SELECT * FROM ${PdfTagEntity.TABLE_NAME}"
+
+    const val REMOVE_TAG_BY_ID =
+        "DELETE FROM ${PdfTagEntity.TABLE_NAME} WHERE ${PdfTagEntity.FIELD_ID} = :tagId"
 
     // COMMENT
     const val GET_ALL_COMMENTS_WITH_PDF_ID =
