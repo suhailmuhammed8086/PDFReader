@@ -26,6 +26,16 @@ fun <T : Parcelable?> Intent.getParcelableExtraVs(
         getParcelableExtra(key)
     }
 }
+fun <T : Parcelable?> Intent.getParcelableArrayListExtraVs(
+    key: String,
+    java: Class<out T>
+): ArrayList<T>? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getParcelableArrayListExtra(key,java)
+    } else {
+        getParcelableArrayListExtra(key)
+    }
+}
 fun <T : Parcelable?> Bundle.getParcelableVs(
     key: String,
     java: Class<out T>

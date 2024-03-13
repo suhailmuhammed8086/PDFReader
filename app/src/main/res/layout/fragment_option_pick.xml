@@ -10,8 +10,9 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:gravity="center_vertical"
         android:background="@color/second_color"
         android:paddingHorizontal="15dp">
 
@@ -40,7 +41,6 @@
         android:id="@+id/rvOptions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
         tools:listitem="@layout/adapter_more_option" />
 
 

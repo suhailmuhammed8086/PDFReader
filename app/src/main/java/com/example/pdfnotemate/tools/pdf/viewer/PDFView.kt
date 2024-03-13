@@ -2005,7 +2005,7 @@ class PDFView(context: Context?, set: AttributeSet?) :
         redraw()
     }
 
-    fun removeHighlightAnnotations(highlightIds: List<Int>) {
+    fun removeHighlightAnnotations(highlightIds: List<Long>) {
         annotationHandler.removeHighlightAnnotation(highlightIds)
         redraw()
     }
@@ -2019,9 +2019,22 @@ class PDFView(context: Context?, set: AttributeSet?) :
         redraw()
     }
 
-    fun removeNoteAnnotations(noteIds: List<Int>) {
-        annotationHandler.removeNoteAnnotation(noteIds)
+    fun removeCommentAnnotations(noteIds: List<Long>) {
+        annotationHandler.removeCommentAnnotation(noteIds)
         redraw()
+    }
+
+    fun updateComment(commentModel: CommentModel) {
+        annotationHandler.annotations.map {
+            if (it.type == PdfAnnotationModel.Type.Note){
+                if (it.asNote()?.id == commentModel.id){
+                    it.asNote()?.apply {
+                        text = commentModel.text
+                        updatedAt = commentModel.updatedAt
+                    }
+                }
+            }
+        }
     }
 
     private fun findDrawSegmentsOfAnnotation(
@@ -2191,6 +2204,10 @@ class PDFView(context: Context?, set: AttributeSet?) :
                 redraw()
             }
         }
+    }
+
+    fun getTotalPage(): Int {
+        return pdfFile?.pagesCount?:0
     }
 
     fun updateMergeFailed() {

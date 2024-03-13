@@ -14,4 +14,8 @@
     <string name="add_comment">Add comment</string>
     <string name="save">Save</string>
     <string name="add">Add</string>
+    <string name="comments">Comments</string>
+    <string name="page">"Page "</string>
+    <string name="highlights">Highlights</string>
+    <string name="bookmarks">Bookmarks</string>
 </resources>

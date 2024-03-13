@@ -31,6 +31,7 @@ interface PDFRepository {
 
     suspend fun getAllComments(pdfId: Long): ResponseState
     suspend fun deleteComments(commentIds: List<Long>): ResponseState
+    suspend fun updateComment(commentId: Long, newText: String): ResponseState
 
     // HIGHLIGHTS
     suspend fun addHighlight(
@@ -52,7 +53,7 @@ interface PDFRepository {
     ): ResponseState
 
     suspend fun getAllBookmark(pdfId: Long): ResponseState
-    suspend fun deleteBookmark(bookmarkIds: List<Long>): ResponseState
+    suspend fun deleteBookmarks(bookmarkIds: List<Long>): ResponseState
     suspend fun deleteBookmarkWithPageAndPdfId(page: Int, pdfId: Long): ResponseState
 
 

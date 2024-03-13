@@ -1,4 +1,4 @@
-package com.example.pdfnotemate.ui.activity.annotations.comments
+package com.example.pdfnotemate.ui.activity.annotations.bookmarks
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,45 +7,41 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pdfnotemate.R
-import com.example.pdfnotemate.adapter.CommentListAdapter
+import com.example.pdfnotemate.adapter.BookmarkListAdapter
 import com.example.pdfnotemate.base.ui.BaseActivity
-import com.example.pdfnotemate.databinding.ActivityCommentsListBinding
+import com.example.pdfnotemate.databinding.ActivityBookmarkListBinding
 import com.example.pdfnotemate.model.DeleteAnnotationResponse
 import com.example.pdfnotemate.state.ResponseState
-import com.example.pdfnotemate.tools.pdf.viewer.model.CommentModel
+import com.example.pdfnotemate.tools.pdf.viewer.model.BookmarkModel
 import com.example.pdfnotemate.utils.Alerts
 import com.example.pdfnotemate.utils.BundleArguments
 import com.example.pdfnotemate.utils.getParcelableArrayListExtraVs
-import com.example.pdfnotemate.utils.getParcelableExtraVs
-import com.example.pdfnotemate.utils.log
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAdapter.Listener {
-    private val viewModel : CommentsListViewModel by viewModels()
-    private lateinit var binding : ActivityCommentsListBinding
-    private var commentListAdapter: CommentListAdapter? = null
-    private var comments = arrayListOf<CommentModel>()
+class BookmarkListActivity : BaseActivity(), View.OnClickListener, BookmarkListAdapter.Listener {
+    private val viewModel : BookmarkListViewModel by viewModels()
+    private lateinit var binding : ActivityBookmarkListBinding
+    private var bookmarkListAdapter: BookmarkListAdapter? = null
+    private var bookmarks = arrayListOf<BookmarkModel>()
 
-    private var deletedCommentIds = arrayListOf<Long>()
+    private var deletedBookmarksIds = arrayListOf<Long>()
 
 
     companion object {
-        const val RESULT_ACTION_OPEN_COMMENT = "action.open.comment"
+        const val RESULT_ACTION_OPEN_BOOKMARK = "action.open.bookmark"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityCommentsListBinding.inflate(layoutInflater)
+        binding = ActivityBookmarkListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -57,11 +53,11 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
 
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                if (deletedCommentIds.isEmpty()) {
+                if (deletedBookmarksIds.isEmpty()) {
                     finish()
                 } else {
                     val result = Intent()
-                    result.putExtra(BundleArguments.ARGS_DELETED_COMMENT_IDS,deletedCommentIds.toLongArray())
+                    result.putExtra(BundleArguments.ARGS_DELETED_BOOKMARK_IDS,deletedBookmarksIds.toLongArray())
                     setResult(RESULT_OK, result)
                     finish()
                 }
@@ -73,9 +69,9 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
 
     private fun getDataFromIntent() {
         intent?.let {
-            it.getParcelableArrayListExtraVs(BundleArguments.ARGS_COMMENTS, CommentModel::class.java)?.also { comments->
-                this.comments.clear()
-                this.comments.addAll(comments)
+            it.getParcelableArrayListExtraVs(BundleArguments.ARGS_BOOKMARKS, BookmarkModel::class.java)?.also { bookmarks->
+                this.bookmarks.clear()
+                this.bookmarks.addAll(bookmarks)
             }
         }
     }
@@ -83,18 +79,18 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
     private fun initView() {
         binding.btBack.setOnClickListener(this)
         binding.btDelete.setOnClickListener(this)
-        commentListAdapter = CommentListAdapter(this,comments, this)
-        binding.rvComments.apply {
-            adapter = commentListAdapter
-            layoutManager = LinearLayoutManager(this@CommentsListActivity)
+        bookmarkListAdapter = BookmarkListAdapter(this,bookmarks, this)
+        binding.rvBookmarks.apply {
+            adapter = bookmarkListAdapter
+            layoutManager = LinearLayoutManager(this@BookmarkListActivity)
         }
 
         checkItemCount()
     }
 
     private fun checkItemCount() {
-        if (comments.isEmpty()) {
-            setError("No Comments found")
+        if (bookmarks.isEmpty()) {
+            setError("No Bookmarks found")
         } else {
             setError(null)
         }
@@ -103,7 +99,7 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btBack -> {
-                if (commentListAdapter?.adapterState == CommentListAdapter.AdapterState.SELECTION_MODE) {
+                if (bookmarkListAdapter?.adapterState == BookmarkListAdapter.AdapterState.SELECTION_MODE) {
                     clearAllSelection()
                 } else {
                     onBackPressedDispatcher.onBackPressed()
@@ -112,19 +108,19 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
             }
 
             R.id.btDelete -> {
-                deleteComments()
+                deleteBookmarks()
             }
         }
     }
 
-    private fun deleteComments() {
-        val idsToDelete = comments.filter { it.isSelected }.map { it.id }
-        viewModel.deleteComments(idsToDelete)
+    private fun deleteBookmarks() {
+        val idsToDelete = bookmarks.filter { it.isSelected }.map { it.id }
+        viewModel.deleteBookmarks(idsToDelete)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun bindUI() = launch(Dispatchers.Main) {
-        viewModel.deleteCommentResponse.state.observe(this@CommentsListActivity) {state->
+        viewModel.deleteBookmarksResponse.state.observe(this@BookmarkListActivity) { state->
             when (state) {
                 is ResponseState.Failed -> {
                     Alerts.failureSnackBar(binding.root,state.error)
@@ -133,11 +129,11 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
                 is ResponseState.Success<*> -> {
                     val response = state.response as DeleteAnnotationResponse?
                     if (response != null) {
-                        deletedCommentIds.addAll(response.deletedIds)
-                        comments.removeAll {
+                        deletedBookmarksIds.addAll(response.deletedIds)
+                        bookmarks.removeAll {
                             response.deletedIds.contains(it.id)
                         }
-                        commentListAdapter?.notifyDataSetChanged()
+                        bookmarkListAdapter?.notifyDataSetChanged()
                         checkItemCount()
                     }
                 }
@@ -157,22 +153,22 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
 
 
     override fun onItemClicked(
-        item: CommentModel,
-        state: CommentListAdapter.AdapterState,
+        item: BookmarkModel,
+        state: BookmarkListAdapter.AdapterState,
         position: Int
     ) {
-       if (state == CommentListAdapter.AdapterState.IDLE) {
-           val result = Intent(RESULT_ACTION_OPEN_COMMENT).apply {
-               putExtra(BundleArguments.ARGS_COMMENT, item)
-               putExtra(BundleArguments.ARGS_DELETED_COMMENT_IDS, deletedCommentIds.toLongArray())
+       if (state == BookmarkListAdapter.AdapterState.IDLE) {
+           val result = Intent(RESULT_ACTION_OPEN_BOOKMARK).apply {
+               putExtra(BundleArguments.ARGS_BOOKMARK, item)
+               putExtra(BundleArguments.ARGS_DELETED_BOOKMARK_IDS, deletedBookmarksIds.toLongArray())
            }
            setResult(RESULT_OK, result)
            finish()
        } else {
-           comments[position].isSelected = !comments[position].isSelected
-           commentListAdapter?.notifyItemChanged(position)
+           bookmarks[position].isSelected = !bookmarks[position].isSelected
+           bookmarkListAdapter?.notifyItemChanged(position)
 
-           val selectedCount = comments.count { it.isSelected }
+           val selectedCount = bookmarks.count { it.isSelected }
            if (selectedCount == 0) {
                clearAllSelection()
            }
@@ -181,23 +177,23 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onItemLongClicked(
-        item: CommentModel,
-        state: CommentListAdapter.AdapterState,
+        item: BookmarkModel,
+        state: BookmarkListAdapter.AdapterState,
         position: Int
     ) {
-        comments[position].isSelected = true
-        commentListAdapter?.adapterState = CommentListAdapter.AdapterState.SELECTION_MODE
-        commentListAdapter?.notifyDataSetChanged()
-        setUpAppBar(CommentListAdapter.AdapterState.SELECTION_MODE)
+        bookmarks[position].isSelected = true
+        bookmarkListAdapter?.adapterState = BookmarkListAdapter.AdapterState.SELECTION_MODE
+        bookmarkListAdapter?.notifyDataSetChanged()
+        setUpAppBar(BookmarkListAdapter.AdapterState.SELECTION_MODE)
     }
 
-    private fun setUpAppBar(state: CommentListAdapter.AdapterState) {
+    private fun setUpAppBar(state: BookmarkListAdapter.AdapterState) {
         when (state) {
-            CommentListAdapter.AdapterState.IDLE ->  {
+            BookmarkListAdapter.AdapterState.IDLE ->  {
                 binding.btBack.setImageResource(R.drawable.ic_arrow_back)
                 binding.btDelete.visibility = View.GONE
             }
-            CommentListAdapter.AdapterState.SELECTION_MODE ->  {
+            BookmarkListAdapter.AdapterState.SELECTION_MODE ->  {
                 binding.btBack.setImageResource(R.drawable.ic_close_white)
                 binding.btDelete.visibility = View.VISIBLE
             }
@@ -206,10 +202,10 @@ class CommentsListActivity : BaseActivity(), View.OnClickListener, CommentListAd
 
     @SuppressLint("NotifyDataSetChanged")
     private fun clearAllSelection () {
-        comments.map { it.isSelected = false }
-        commentListAdapter?.adapterState = CommentListAdapter.AdapterState.IDLE
-        commentListAdapter?.notifyDataSetChanged()
-        setUpAppBar(CommentListAdapter.AdapterState.IDLE)
+        bookmarks.map { it.isSelected = false }
+        bookmarkListAdapter?.adapterState = BookmarkListAdapter.AdapterState.IDLE
+        bookmarkListAdapter?.notifyDataSetChanged()
+        setUpAppBar(BookmarkListAdapter.AdapterState.IDLE)
     }
 
 }

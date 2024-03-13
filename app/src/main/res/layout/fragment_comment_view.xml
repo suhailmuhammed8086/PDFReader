@@ -100,7 +100,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/ripple_second_color_17r"
+        android:background="@drawable/ripple_second_color_5r"
         android:fontFamily="@font/jakarta_sans_semibold_600"
         android:gravity="center"
         android:includeFontPadding="false"

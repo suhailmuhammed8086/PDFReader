@@ -196,6 +196,25 @@ class PdfRepositoryImpl @Inject constructor(
             }
         }
     }
+    override suspend fun updateComment(commentId: Long, newText: String): ResponseState {
+        return withContext(Dispatchers.IO) {
+            try {
+                val comment = dao.getCommentWithId(commentId) ?: throw Exception("Comment Not found")
+                val updatedAt = System.currentTimeMillis()
+                dao.updateComment(commentId,newText, updatedAt)
+                return@withContext ResponseState.Success<CommentModel>(CommentModel(
+                    comment.id?:-1,
+                    comment.snippet,
+                    newText,
+                    comment.page,
+                    updatedAt,
+                    comment.coordinates
+                ))
+            } catch (e: Exception) {
+                return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
+            }
+        }
+    }
 
     override suspend fun addHighlight(
         pdfId: Long,
@@ -255,7 +274,7 @@ class PdfRepositoryImpl @Inject constructor(
     override suspend fun deleteHighlight(highlightIds: List<Long>): ResponseState {
         return withContext(Dispatchers.IO) {
             try {
-                dao.deleteCommentsWithIds(highlightIds)
+                dao.deleteHighlightsWithIds(highlightIds)
                 return@withContext ResponseState.Success<DeleteAnnotationResponse>(DeleteAnnotationResponse(highlightIds))
             } catch (e: Exception) {
                 return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
@@ -306,7 +325,7 @@ class PdfRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteBookmark(bookmarkIds: List<Long>): ResponseState {
+    override suspend fun deleteBookmarks(bookmarkIds: List<Long>): ResponseState {
         return withContext(Dispatchers.IO) {
             try {
                 dao.deleteBookmarksWithIds(bookmarkIds)

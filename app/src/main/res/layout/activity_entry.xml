@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="100dp"
-        android:background="@drawable/ripple_second_color_17r"
+        android:background="@drawable/ripple_second_color_5r"
         android:fontFamily="@font/jakarta_sans_bold_700"
         android:gravity="center"
         android:includeFontPadding="false"

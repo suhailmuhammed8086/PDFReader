@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.annotations.comments.CommentsListActivity">
+    tools:context=".ui.activity.annotations.highlight.HighlightListActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/jakarta_sans_semibold_600"
                 android:includeFontPadding="false"
-                android:text="@string/comments"
+                android:text="@string/highlights"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -60,7 +60,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvComments"
+            android:id="@+id/rvHighLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -72,7 +72,6 @@
             android:layout_centerInParent="true"
             android:fontFamily="@font/jakarta_sans_semibold_600"
             android:includeFontPadding="false"
-            android:text="@string/you_don_t_have_any_pdf_notes_yet"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:visibility="gone" />

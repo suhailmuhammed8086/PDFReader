@@ -41,7 +41,7 @@ class PdfAnnotationHandler(
         style = Paint.Style.FILL_AND_STROKE
     }
     private val innerCirclePaint = Paint().apply {
-        color = Color.RED
+        color = Color.parseColor("#057FE0")
         style = Paint.Style.FILL_AND_STROKE
     }
 
@@ -206,14 +206,14 @@ class PdfAnnotationHandler(
         return resultNotes
     }
 
-    fun removeNoteAnnotation(noteIds: List<Int>) {
+    fun removeCommentAnnotation(noteIds: List<Long>) {
         annotations.removeAll {
-            it.type == PdfAnnotationModel.Type.Note && noteIds.contains(it.asNote()!!.id.toInt())
+            it.type == PdfAnnotationModel.Type.Note && noteIds.contains(it.asNote()!!.id)
         }
     }
-    fun removeHighlightAnnotation(highlightIds: List<Int>) {
+    fun removeHighlightAnnotation(highlightIds: List<Long>) {
         annotations.removeAll {
-            it.type == PdfAnnotationModel.Type.Highlight && highlightIds.contains(it.asHighlight()!!.id.toInt())
+            it.type == PdfAnnotationModel.Type.Highlight && highlightIds.contains(it.asHighlight()!!.id)
         }
     }
 

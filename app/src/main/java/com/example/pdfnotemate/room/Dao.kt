@@ -34,6 +34,10 @@ interface Dao {
     suspend fun insertComment(comment: CommentEntity): Long
     @Query(Queries.GET_ALL_COMMENTS_WITH_PDF_ID)
     suspend fun getCommentsOfPdf(pdfId: Long): List<CommentEntity>
+    @Query(Queries.GET_COMMENT_WITH_ID)
+    suspend fun getCommentWithId(id: Long): CommentEntity?
+    @Query(Queries.UPDATE_COMMENT_WITH_ID)
+    suspend fun updateComment(id: Long, newText: String, updatedAt: Long)
     @Query(Queries.DELETE_COMMENTS_WITH_IDS)
     suspend fun deleteCommentsWithIds(ids: List<Long>)
 

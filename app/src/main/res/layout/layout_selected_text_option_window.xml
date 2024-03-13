@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/background_17r_white"
+        android:background="@drawable/background_5r_white"
         android:elevation="5dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat

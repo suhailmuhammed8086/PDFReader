@@ -1,10 +1,13 @@
 package com.example.pdfnotemate.ui.activity.reader
 
+import android.content.Intent
 import android.graphics.PointF
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,19 +16,25 @@ import com.example.pdfnotemate.base.ui.BaseActivity
 import com.example.pdfnotemate.databinding.ActivityPdfReaderBinding
 import com.example.pdfnotemate.databinding.ContainerPdfReaderBinding
 import com.example.pdfnotemate.model.AnnotationListResponse
+import com.example.pdfnotemate.model.DeleteAnnotationResponse
 import com.example.pdfnotemate.model.PdfNoteListModel
 import com.example.pdfnotemate.state.ResponseState
 import com.example.pdfnotemate.tools.pdf.viewer.PDFView
 import com.example.pdfnotemate.tools.pdf.viewer.PdfFile
+import com.example.pdfnotemate.tools.pdf.viewer.model.BookmarkModel
 import com.example.pdfnotemate.tools.pdf.viewer.model.CommentModel
 import com.example.pdfnotemate.tools.pdf.viewer.model.Coordinates
 import com.example.pdfnotemate.tools.pdf.viewer.model.HighlightModel
 import com.example.pdfnotemate.tools.pdf.viewer.model.PdfAnnotationModel
 import com.example.pdfnotemate.tools.pdf.viewer.model.TextSelectionData
 import com.example.pdfnotemate.tools.pdf.viewer.selection.TextSelectionOptionsWindow
+import com.example.pdfnotemate.ui.activity.annotations.bookmarks.BookmarkListActivity
+import com.example.pdfnotemate.ui.activity.annotations.comments.CommentsListActivity
+import com.example.pdfnotemate.ui.activity.annotations.highlight.HighlightListActivity
 import com.example.pdfnotemate.ui.fragment.CommentViewFragment
 import com.example.pdfnotemate.ui.fragment.MoreOptionModel
 import com.example.pdfnotemate.ui.fragment.OptionPickFragment
+import com.example.pdfnotemate.utils.Alerts
 import com.example.pdfnotemate.utils.BundleArguments
 import com.example.pdfnotemate.utils.getParcelableExtraVs
 import com.example.pdfnotemate.utils.log
@@ -36,7 +45,8 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 @AndroidEntryPoint
-class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Listener, CommentViewFragment.Listener {
+class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Listener,
+    CommentViewFragment.Listener {
     private lateinit var binding: ActivityPdfReaderBinding
     private lateinit var contentBinding: ContainerPdfReaderBinding
 
@@ -44,7 +54,25 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
     private var textSelectionOptionWindow: TextSelectionOptionsWindow? = null
     private var pdfRenderScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
+    private var commentListActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ::onCommentListActivityResult
+    )
+    private var highlightListActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ::onHighlightListActivityResult
+    )
+    private var bookmarkListActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ::onBookmarkActivityResult
+    )
 
+
+    companion object {
+        private const val OPTION_COMMENTS = 1
+        private const val OPTION_HIGHLIGHTS = 2
+        private const val OPTION_BOOKMARKS = 3
+    }
 
     private val viewModel: PdfReaderViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +92,10 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
     }
 
     private fun getDataFromIntent() {
-        viewModel.pdfDetails = intent?.getParcelableExtraVs(BundleArguments.ARGS_PDF_DETAILS, PdfNoteListModel::class.java)
+        viewModel.pdfDetails = intent?.getParcelableExtraVs(
+            BundleArguments.ARGS_PDF_DETAILS,
+            PdfNoteListModel::class.java
+        )
         viewModel.pdfDetails.log("pdfDetails")
     }
 
@@ -93,70 +124,110 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
     }
 
     override fun bindUI() = launch(Dispatchers.Main) {
-        viewModel.addCommentResponse.state.observe(this@PdfReaderActivity){state->
-            when(state) {
+        viewModel.addCommentResponse.state.observe(this@PdfReaderActivity) { state ->
+            when (state) {
                 is ResponseState.Failed -> {
 
                 }
+
                 ResponseState.Loading -> {
 
                 }
+
                 is ResponseState.Success<*> -> {
                     val response = state.response as CommentModel?
-                    if (response!= null) {
-                        viewModel.annotations.comments.add(0,response)
+                    if (response != null) {
+                        viewModel.annotations.comments.add(0, response)
                         contentBinding.pdfView.addComment(response)
                     }
                 }
+
                 is ResponseState.ValidationError -> {
 
                 }
             }
         }
-        viewModel.addHighlightResponse.state.observe(this@PdfReaderActivity){state->
-            when(state) {
+        viewModel.addHighlightResponse.state.observe(this@PdfReaderActivity) { state ->
+            when (state) {
                 is ResponseState.Failed -> {
 
                 }
+
                 ResponseState.Loading -> {
 
                 }
+
                 is ResponseState.Success<*> -> {
                     val response = state.response as HighlightModel?
-                    if (response!= null) {
-                        viewModel.annotations.highlights.add(0,response)
+                    if (response != null) {
+                        viewModel.annotations.highlights.add(0, response)
                         contentBinding.pdfView.addHighlight(response)
                     }
                 }
+
                 is ResponseState.ValidationError -> {
 
                 }
             }
         }
-        viewModel.addBookmarkResponse.state.observe(this@PdfReaderActivity){state->
-            when(state) {
+        viewModel.addBookmarkResponse.state.observe(this@PdfReaderActivity) { state ->
+            when (state) {
                 is ResponseState.Failed -> {
 
                 }
+
                 ResponseState.Loading -> {
 
                 }
+
                 is ResponseState.Success<*> -> {
-
+                    val response = state.response as BookmarkModel?
+                    if (response != null) {
+                        viewModel.annotations.bookmarks.add(response)
+                        updateBookmarkInfo(contentBinding.pdfView.currentPage + 1)
+                    }
                 }
+
                 is ResponseState.ValidationError -> {
 
                 }
             }
         }
-        viewModel.annotationListResponse.state.observe(this@PdfReaderActivity){state->
-            when(state) {
+        viewModel.removeBookmarkResponse.state.observe(this@PdfReaderActivity) { state ->
+            when (state) {
                 is ResponseState.Failed -> {
 
                 }
+
                 ResponseState.Loading -> {
 
                 }
+
+                is ResponseState.Success<*> -> {
+                    val response = state.response as DeleteAnnotationResponse?
+                    if (response != null) {
+                        viewModel.annotations.bookmarks.removeAll {
+                            response.deletedIds.contains(it.id)
+                        }
+                        updateBookmarkInfo(contentBinding.pdfView.currentPage + 1)
+                    }
+                }
+
+                is ResponseState.ValidationError -> {
+
+                }
+            }
+        }
+        viewModel.annotationListResponse.state.observe(this@PdfReaderActivity) { state ->
+            when (state) {
+                is ResponseState.Failed -> {
+
+                }
+
+                ResponseState.Loading -> {
+
+                }
+
                 is ResponseState.Success<*> -> {
                     val response = state.response as AnnotationListResponse?
                     if (response != null) {
@@ -168,13 +239,66 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
                         contentBinding.pdfView.loadAnnotations(highlightAndComments)
                     }
                 }
+
+                is ResponseState.ValidationError -> {
+
+                }
+            }
+        }
+        viewModel.updateCommentResponse.state.observe(this@PdfReaderActivity) { state ->
+            when (state) {
+                is ResponseState.Failed -> {
+                    Alerts.failureSnackBar(binding.root, state.error)
+                }
+
+                ResponseState.Loading -> {
+
+                }
+
+                is ResponseState.Success<*> -> {
+                    val response = state.response as CommentModel?
+                    if (response != null) {
+                        viewModel.annotations.comments.map {
+                            if (it.id == response.id) {
+                                it.text = response.text
+                                it.updatedAt = response.updatedAt
+                            }
+                        }
+                        contentBinding.pdfView.updateComment(response)
+                    }
+                }
+
+                is ResponseState.ValidationError -> {
+
+                }
+            }
+        }
+        viewModel.deleteCommentResponse.state.observe(this@PdfReaderActivity) { state ->
+            when (state) {
+                is ResponseState.Failed -> {
+                    Alerts.failureSnackBar(binding.root, state.error)
+                }
+
+                ResponseState.Loading -> {
+
+                }
+
+                is ResponseState.Success<*> -> {
+                    val response = state.response as DeleteAnnotationResponse?
+                    if (response != null) {
+                        viewModel.removeComments(response.deletedIds)
+                        contentBinding.pdfView.removeCommentAnnotations(response.deletedIds)
+                    }
+                }
+
                 is ResponseState.ValidationError -> {
 
                 }
             }
         }
     }
-    private val pdfCallBack = object : PDFView.Listener{
+
+    private val pdfCallBack = object : PDFView.Listener {
 
         override fun onPreparationStarted() {
             contentBinding.progressBar.visibility = View.VISIBLE
@@ -191,7 +315,9 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         }
 
         override fun onPageChanged(pageIndex: Int, paginationPageIndex: Int) {
-
+            val page = pageIndex + 1
+            updateBookmarkInfo(page)
+            showPageNumber(page)
         }
 
         override fun onTextSelected(selection: TextSelectionData, rawPoint: PointF) {
@@ -203,14 +329,14 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         }
 
         override fun onTextSelectionCleared() {
-
+            textSelectionOptionWindow?.dismiss()
         }
 
         override fun onNotesStampsClicked(comments: List<CommentModel>, pointOfNote: PointF) {
             if (comments.size == 1) {
-                CommentViewFragment.showToCommentView(comments.first(),supportFragmentManager)
+                CommentViewFragment.showToCommentView(comments.first(), supportFragmentManager)
             } else {
-
+                openCommentList(comments)
             }
         }
 
@@ -250,14 +376,14 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
 
     }
 
-    private val textSelectionWindowCallback = object :  TextSelectionOptionsWindow.Listener {
+    private val textSelectionWindowCallback = object : TextSelectionOptionsWindow.Listener {
         override fun onAddHighlightClick(
             snippet: String,
             color: String,
             page: Int,
             coordinates: Coordinates
         ) {
-            viewModel.addHighlight(snippet,color, page, coordinates)
+            viewModel.addHighlight(snippet, color, page, coordinates)
         }
 
         override fun onAddNotClick(snippet: String, page: Int, coordinates: Coordinates) {
@@ -269,27 +395,42 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
     }
 
 
-        private fun initView() {
+    private fun initView() {
         binding.btBack.setOnClickListener(this)
         binding.btMoreOptions.setOnClickListener(this)
         binding.tvTitle.text = viewModel.pdfDetails?.title ?: ""
+        contentBinding.cbBookmark.setOnClickListener(this)
     }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btBack -> {
                 finish()
             }
+
             R.id.btMoreOptions -> {
                 showMoreOptions()
+            }
+
+            R.id.cbBookmark -> {
+                val currentPage = contentBinding.pdfView.currentPage + 1
+                if (contentBinding.cbBookmark.isChecked) {
+                    viewModel.addBookmark(currentPage)
+                } else {
+                    viewModel.removeBookmark(currentPage)
+                }
             }
         }
     }
 
     private fun showMoreOptions() {
         val options = listOf(
-            MoreOptionModel(1, "Highlights"),
-            MoreOptionModel(2, "Comments"),
-            MoreOptionModel(3, "Bookmarks"),
+            MoreOptionModel(OPTION_COMMENTS, "${viewModel.annotations.comments.size}  Comments"),
+            MoreOptionModel(
+                OPTION_HIGHLIGHTS,
+                "${viewModel.annotations.highlights.size}  Highlights"
+            ),
+            MoreOptionModel(OPTION_BOOKMARKS, "${viewModel.annotations.bookmarks.size}  Bookmarks"),
         )
         OptionPickFragment.show(
             supportFragmentManager,
@@ -299,19 +440,162 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
     }
 
     override fun onMoreOptionSelected(option: MoreOptionModel) {
+        when (option.id) {
+            OPTION_COMMENTS -> {
+                val comments = viewModel.annotations.comments.toList()
+                openCommentList(comments)
+            }
 
+            OPTION_HIGHLIGHTS -> {
+                val highlights = viewModel.annotations.highlights.toList()
+                openHighlightList(highlights)
+            }
+
+            OPTION_BOOKMARKS -> {
+                val bookmarks = viewModel.annotations.bookmarks.toList()
+                openBookmarksList(bookmarks)
+            }
+        }
     }
 
     override fun onDeleteCommentClick(commentId: Long) {
-
+        viewModel.deleteComment(commentId)
     }
 
     override fun onEditCommentSaveClick(commentModel: CommentModel) {
-
+        viewModel.updateComment(commentModel.id, commentModel.text)
     }
 
     override fun onAddCommentSaveClick(commentModel: CommentModel) {
         textSelectionOptionWindow?.dismiss(true)
-        viewModel.addComment(commentModel.snippet,commentModel.text,commentModel.page,commentModel.coordinates)
+        viewModel.addComment(
+            commentModel.snippet,
+            commentModel.text,
+            commentModel.page,
+            commentModel.coordinates
+        )
+    }
+
+    private fun openCommentList(comments: List<CommentModel>) {
+        val launchIntent = Intent(this, CommentsListActivity::class.java)
+        launchIntent.putParcelableArrayListExtra(BundleArguments.ARGS_COMMENTS, ArrayList(comments))
+        commentListActivityLauncher.launch(launchIntent)
+
+    }
+
+    private fun openHighlightList(highlights: List<HighlightModel>) {
+        val launchIntent = Intent(this, HighlightListActivity::class.java)
+        launchIntent.putParcelableArrayListExtra(
+            BundleArguments.ARGS_HIGHLIGHTS,
+            ArrayList(highlights)
+        )
+        highlightListActivityLauncher.launch(launchIntent)
+    }
+
+    private fun openBookmarksList(bookmarks: List<BookmarkModel>) {
+        val launchIntent = Intent(this, BookmarkListActivity::class.java)
+        launchIntent.putParcelableArrayListExtra(
+            BundleArguments.ARGS_BOOKMARKS,
+            ArrayList(bookmarks)
+        )
+        bookmarkListActivityLauncher.launch(launchIntent)
+    }
+
+    private fun onCommentListActivityResult(activityResult: ActivityResult?) {
+        if (activityResult != null) {
+            activityResult.data?.let { result ->
+                val deletedComments =
+                    result.getLongArrayExtra(BundleArguments.ARGS_DELETED_COMMENT_IDS) ?: LongArray(
+                        0
+                    )
+                deletedComments.toList()
+                if (deletedComments.isNotEmpty()) {
+                    viewModel.removeComments(deletedComments.toList())
+                    contentBinding.pdfView.removeCommentAnnotations(deletedComments.toList())
+                }
+
+                if (result.action == CommentsListActivity.RESULT_ACTION_OPEN_COMMENT) {
+                    val comment = result.getParcelableExtraVs(
+                        BundleArguments.ARGS_COMMENT,
+                        CommentModel::class.java
+                    )
+                    if (comment != null) {
+                        contentBinding.pdfView.jumpTo(comment.page - 1) //Passing index
+                        CommentViewFragment.showToCommentView(comment, supportFragmentManager)
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun onHighlightListActivityResult(activityResult: ActivityResult?) {
+        if (activityResult != null) {
+            activityResult.data?.let { result ->
+                val deletedHighlights =
+                    result.getLongArrayExtra(BundleArguments.ARGS_DELETED_HIGHLIGHT_IDS)
+                        ?: LongArray(0)
+                if (deletedHighlights.isNotEmpty()) {
+                    viewModel.removeHighlight(deletedHighlights.toList())
+                    contentBinding.pdfView.removeHighlightAnnotations(deletedHighlights.toList())
+                }
+
+                if (result.action == HighlightListActivity.RESULT_ACTION_OPEN_HIGHLIGHT) {
+                    val highlight = result.getParcelableExtraVs(
+                        BundleArguments.ARGS_HIGHLIGHT,
+                        HighlightModel::class.java
+                    )
+                    if (highlight != null) {
+                        contentBinding.pdfView.jumpTo(highlight.page - 1) //Passing index
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun onBookmarkActivityResult(activityResult: ActivityResult?) {
+        if (activityResult != null) {
+            activityResult.data?.let { result ->
+                val deletedBookmarks =
+                    result.getLongArrayExtra(BundleArguments.ARGS_DELETED_BOOKMARK_IDS)
+                        ?: LongArray(0)
+                if (deletedBookmarks.isNotEmpty()) {
+                    viewModel.removeBookmarks(deletedBookmarks.toList())
+                }
+
+                if (result.action == BookmarkListActivity.RESULT_ACTION_OPEN_BOOKMARK) {
+                    val bookmark = result.getParcelableExtraVs(
+                        BundleArguments.ARGS_BOOKMARK,
+                        BookmarkModel::class.java
+                    )
+                    if (bookmark != null) {
+                        contentBinding.pdfView.jumpTo(bookmark.page - 1) //Passing index
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun updateBookmarkInfo(currentPage: Int) {
+        val isBookmarked =
+            viewModel.annotations.bookmarks.indexOfFirst { it.page == currentPage } != -1
+        contentBinding.cbBookmark.isChecked = isBookmarked
+    }
+
+    private fun showPageNumber(currentPage: Int) {
+        val totalPage = contentBinding.pdfView.getTotalPage()
+        val pageInfo = "$currentPage/$totalPage"
+        contentBinding.tvPageInfo.text = pageInfo
+        contentBinding.tvPageInfo.removeCallbacks(hidePageInfoRunnable)
+        contentBinding.tvPageInfo.visibility = View.VISIBLE
+        contentBinding.tvPageInfo.postDelayed(hidePageInfoRunnable, 500)
+    }
+
+    private val hidePageInfoRunnable = Runnable {
+        contentBinding.tvPageInfo.visibility = View.GONE
     }
 }
+
+

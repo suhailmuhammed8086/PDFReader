@@ -15,8 +15,9 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -24,7 +25,6 @@
                 android:minHeight="?attr/actionBarSize"
                 android:orientation="horizontal"
                 android:paddingHorizontal="20dp">
-
 
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -54,56 +54,72 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
-                android:background="@drawable/background_5r_white"
-                android:orientation="horizontal">
+                android:layout_marginBottom="20dp">
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etSearch"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@null"
-                    android:fontFamily="@font/jakarta_sans_medium_500"
-                    android:hint="Search by Name or Tag"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:minHeight="50dp"
-                    android:paddingHorizontal="15dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/hint_color"
-                    android:textSize="14sp" />
+                    android:background="@drawable/background_5r_white"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:fontFamily="@font/jakarta_sans_medium_500"
+                        android:hint="Search by Name or Tag"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:minHeight="50dp"
+                        android:paddingHorizontal="15dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_color"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@null"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_search_white"
+                        android:tint="@color/black" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btAddNewPdf"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@null"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_search_white"
-                    android:tint="@color/second_color" />
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/background_5r_white"
+                    android:src="@drawable/ic_add"
+                    android:tint="@color/black" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btAddNewPdf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/background_5r_white"
-                android:drawableEnd="@drawable/ic_add"
-                android:drawableTint="@color/black"
-                android:fontFamily="@font/jakarta_sans_semibold_600"
-                android:gravity="center"
-                android:layout_marginEnd="30dp"
-                android:includeFontPadding="false"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
-                android:text="Add PDF"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+            <!--            <androidx.appcompat.widget.AppCompatTextView-->
+            <!--                android:id="@+id/btAddNewPdf"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="end"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_marginBottom="10dp"-->
+            <!--                android:background="@drawable/background_5r_white"-->
+            <!--                android:drawableEnd="@drawable/ic_add"-->
+            <!--                android:drawableTint="@color/black"-->
+            <!--                android:fontFamily="@font/jakarta_sans_semibold_600"-->
+            <!--                android:gravity="center"-->
+            <!--                android:layout_marginEnd="30dp"-->
+            <!--                android:includeFontPadding="false"-->
+            <!--                android:paddingHorizontal="10dp"-->
+            <!--                android:paddingVertical="5dp"-->
+            <!--                android:text="Add PDF"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textSize="14sp" />-->
         </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 
     </com.google.android.material.appbar.AppBarLayout>

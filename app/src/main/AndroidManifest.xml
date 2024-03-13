@@ -18,8 +18,20 @@
         android:theme="@style/Theme.PDFNoteMate"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.annotations.bookmarks.BookmarkListActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            tools:ignore="DiscouragedApi" />
+        <activity
+            android:name=".ui.activity.annotations.highlight.HighlightListActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            tools:ignore="DiscouragedApi" />
+        <activity
             android:name=".ui.activity.annotations.comments.CommentsListActivity"
-            android:exported="false" />
+            android:screenOrientation="portrait"
+            android:exported="false"
+            tools:ignore="DiscouragedApi" />
         <activity
             android:name=".ui.activity.reader.PdfReaderActivity"
             android:exported="false"
