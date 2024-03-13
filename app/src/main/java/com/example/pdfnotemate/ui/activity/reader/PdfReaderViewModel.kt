@@ -26,6 +26,7 @@ class PdfReaderViewModel @Inject constructor(
     val annotationListResponse = OperationsStateHandler(viewModelScope)
     val deleteCommentResponse = OperationsStateHandler(viewModelScope)
     val updateCommentResponse = OperationsStateHandler(viewModelScope)
+    val pdfDeleteResponse = OperationsStateHandler(viewModelScope)
 
 
 
@@ -97,6 +98,12 @@ class PdfReaderViewModel @Inject constructor(
     fun deleteComment(commentId: Long) {
         deleteCommentResponse.load {
             pdfRepository.deleteComments(listOf(commentId))
+        }
+    }
+    fun deletePdf() {
+        if (pdfDetails == null) return
+        pdfDeleteResponse.load {
+           pdfRepository.deletePdf(pdfDetails!!.id)
         }
     }
 }

@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
@@ -28,7 +28,6 @@ import com.example.pdfnotemate.utils.BundleArguments
 import com.example.pdfnotemate.utils.log
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -56,6 +55,10 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
                 }
             }
         }
+
+    private var pdfReaderLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(),::onPdfReaderActivityResult)
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,9 +101,9 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
     }
 
     override fun onPdfItemClicked(pdf: PdfNoteListModel) {
-        launchTo(PdfReaderActivity::class.java){
-            it.putParcelable(BundleArguments.ARGS_PDF_DETAILS,pdf)
-        }
+        val launchIntent = Intent(this, PdfReaderActivity::class.java)
+        launchIntent.putExtra(BundleArguments.ARGS_PDF_DETAILS,pdf)
+        pdfReaderLauncher.launch(launchIntent)
     }
 
     override fun onPdfItemLongClicked(pdf: PdfNoteListModel) {
@@ -202,5 +205,14 @@ class HomeActivity : BaseActivity(), View.OnClickListener, OptionPickFragment.Li
         addPdfLauncher.launch(launchIntent)
     }
 
+    private fun onPdfReaderActivityResult(result: ActivityResult?) {
+        if (result != null && result.resultCode == RESULT_OK){
+            if (result.data?.action == PdfReaderActivity.RESULT_ACTION_PDF_DELETED) {
+                Alerts.successSnackBar(binding.root, "Pdf Deleted")
+                // Refresh data
+                viewModel.getAllPdfs()
+            }
+        }
+    }
 
 }

@@ -18,6 +18,7 @@ import com.example.pdfnotemate.databinding.ContainerPdfReaderBinding
 import com.example.pdfnotemate.model.AnnotationListResponse
 import com.example.pdfnotemate.model.DeleteAnnotationResponse
 import com.example.pdfnotemate.model.PdfNoteListModel
+import com.example.pdfnotemate.model.StatusMessageResponse
 import com.example.pdfnotemate.state.ResponseState
 import com.example.pdfnotemate.tools.pdf.viewer.PDFView
 import com.example.pdfnotemate.tools.pdf.viewer.PdfFile
@@ -72,6 +73,9 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         private const val OPTION_COMMENTS = 1
         private const val OPTION_HIGHLIGHTS = 2
         private const val OPTION_BOOKMARKS = 3
+        private const val OPTION_DELETE_PDF = 4
+
+        const val RESULT_ACTION_PDF_DELETED = "action.pdf.deleted"
     }
 
     private val viewModel: PdfReaderViewModel by viewModels()
@@ -127,7 +131,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         viewModel.addCommentResponse.state.observe(this@PdfReaderActivity) { state ->
             when (state) {
                 is ResponseState.Failed -> {
-
+                    Alerts.failureSnackBar(binding.root, state.error)
                 }
 
                 ResponseState.Loading -> {
@@ -140,6 +144,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
                         viewModel.annotations.comments.add(0, response)
                         contentBinding.pdfView.addComment(response)
                     }
+                    Alerts.successSnackBar(binding.root, "Comment added successfully")
                 }
 
                 is ResponseState.ValidationError -> {
@@ -150,6 +155,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         viewModel.addHighlightResponse.state.observe(this@PdfReaderActivity) { state ->
             when (state) {
                 is ResponseState.Failed -> {
+                    Alerts.failureSnackBar(binding.root, state.error)
 
                 }
 
@@ -163,6 +169,8 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
                         viewModel.annotations.highlights.add(0, response)
                         contentBinding.pdfView.addHighlight(response)
                     }
+                    Alerts.successSnackBar(binding.root, "Highlight added successfully")
+
                 }
 
                 is ResponseState.ValidationError -> {
@@ -173,6 +181,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         viewModel.addBookmarkResponse.state.observe(this@PdfReaderActivity) { state ->
             when (state) {
                 is ResponseState.Failed -> {
+                    Alerts.failureSnackBar(binding.root, state.error)
 
                 }
 
@@ -185,6 +194,8 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
                     if (response != null) {
                         viewModel.annotations.bookmarks.add(response)
                         updateBookmarkInfo(contentBinding.pdfView.currentPage + 1)
+                        Alerts.successSnackBar(binding.root, "Bookmark added")
+
                     }
                 }
 
@@ -196,6 +207,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         viewModel.removeBookmarkResponse.state.observe(this@PdfReaderActivity) { state ->
             when (state) {
                 is ResponseState.Failed -> {
+                    Alerts.failureSnackBar(binding.root, state.error)
 
                 }
 
@@ -210,6 +222,8 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
                             response.deletedIds.contains(it.id)
                         }
                         updateBookmarkInfo(contentBinding.pdfView.currentPage + 1)
+                        Alerts.successSnackBar(binding.root, "Bookmark removed")
+
                     }
                 }
 
@@ -221,6 +235,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         viewModel.annotationListResponse.state.observe(this@PdfReaderActivity) { state ->
             when (state) {
                 is ResponseState.Failed -> {
+                    Alerts.failureSnackBar(binding.root, state.error)
 
                 }
 
@@ -265,6 +280,8 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
                             }
                         }
                         contentBinding.pdfView.updateComment(response)
+                        Alerts.successSnackBar(binding.root, "Comment updated")
+
                     }
                 }
 
@@ -288,6 +305,32 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
                     if (response != null) {
                         viewModel.removeComments(response.deletedIds)
                         contentBinding.pdfView.removeCommentAnnotations(response.deletedIds)
+                        Alerts.successSnackBar(binding.root, "Comment Removed")
+
+                    }
+                }
+
+                is ResponseState.ValidationError -> {
+
+                }
+            }
+        }
+        viewModel.pdfDeleteResponse.state.observe(this@PdfReaderActivity) { state ->
+            when (state) {
+                is ResponseState.Failed -> {
+                    Alerts.failureSnackBar(binding.root, state.error)
+                }
+
+                ResponseState.Loading -> {
+
+                }
+
+                is ResponseState.Success<*> -> {
+                    val response = state.response as StatusMessageResponse?
+                    if (response != null) {
+                        val result = Intent(RESULT_ACTION_PDF_DELETED)
+                        setResult(RESULT_OK,result)
+                        finish()
                     }
                 }
 
@@ -306,7 +349,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
 
         override fun onPreparationSuccess() {
             viewModel.loadAllAnnotations()
-
+            contentBinding.cbBookmark.visibility = View.VISIBLE
             contentBinding.progressBar.visibility = View.GONE
         }
 
@@ -341,11 +384,11 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         }
 
         override fun loadTopPdfChunk(mergeId: Int, pageIndexToLoad: Int) {
-
+            // In future i will add pagination to Pdf reader, to load fast :)
         }
 
         override fun loadBottomPdfChunk(mergedId: Int, pageIndexToLoad: Int) {
-
+            // In future i will add pagination to Pdf reader, to load fast :)
         }
 
         override fun onScrolling() {
@@ -357,11 +400,11 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         }
 
         override fun onMergeStart(mergeId: Int, mergeType: PdfFile.MergeType) {
-
+            // In future i will add pagination to Pdf reader, to load fast :)
         }
 
         override fun onMergeEnd(mergeId: Int, mergeType: PdfFile.MergeType) {
-
+            // In future i will add pagination to Pdf reader, to load fast :)
         }
 
         override fun onMergeFailed(
@@ -370,7 +413,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
             message: String,
             exception: java.lang.Exception?
         ) {
-
+            // In future i will add pagination to Pdf reader, to load fast :)
         }
 
 
@@ -431,6 +474,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
                 "${viewModel.annotations.highlights.size}  Highlights"
             ),
             MoreOptionModel(OPTION_BOOKMARKS, "${viewModel.annotations.bookmarks.size}  Bookmarks"),
+            MoreOptionModel(OPTION_DELETE_PDF, "Delete this PDF"),
         )
         OptionPickFragment.show(
             supportFragmentManager,
@@ -454,6 +498,10 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
             OPTION_BOOKMARKS -> {
                 val bookmarks = viewModel.annotations.bookmarks.toList()
                 openBookmarksList(bookmarks)
+            }
+
+            OPTION_DELETE_PDF -> {
+                viewModel.deletePdf()
             }
         }
     }
@@ -590,7 +638,7 @@ class PdfReaderActivity : BaseActivity(), View.OnClickListener, OptionPickFragme
         contentBinding.tvPageInfo.text = pageInfo
         contentBinding.tvPageInfo.removeCallbacks(hidePageInfoRunnable)
         contentBinding.tvPageInfo.visibility = View.VISIBLE
-        contentBinding.tvPageInfo.postDelayed(hidePageInfoRunnable, 500)
+        contentBinding.tvPageInfo.postDelayed(hidePageInfoRunnable, 10000)
     }
 
     private val hidePageInfoRunnable = Runnable {

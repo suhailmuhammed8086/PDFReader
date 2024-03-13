@@ -6,6 +6,7 @@ import com.example.pdfnotemate.model.DeleteAnnotationResponse
 import com.example.pdfnotemate.model.PdfNoteListModel
 import com.example.pdfnotemate.model.PdfNotesResponse
 import com.example.pdfnotemate.model.RemoveTagResponse
+import com.example.pdfnotemate.model.StatusMessageResponse
 import com.example.pdfnotemate.model.TagModel
 import com.example.pdfnotemate.room.Dao
 import com.example.pdfnotemate.room.entity.BookmarkEntity
@@ -20,6 +21,7 @@ import com.example.pdfnotemate.tools.pdf.viewer.model.Coordinates
 import com.example.pdfnotemate.tools.pdf.viewer.model.HighlightModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 
@@ -85,6 +87,23 @@ class PdfRepositoryImpl @Inject constructor(
                 }
                 return@withContext ResponseState.Success<PdfNotesResponse>(PdfNotesResponse(pdfNotes))
 
+            } catch (e: Exception) {
+                return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
+            }
+        }
+    }
+
+    override suspend fun deletePdf(pdfId: Long): ResponseState {
+        return withContext(Dispatchers.IO) {
+            try {
+                val pdf = dao.getPdfById(pdfId)?: throw Exception("Pdf Already deleted")
+                dao.deleteAllCommentsByPdfId(pdfId)
+                dao.deleteAllHighlightsByPdfId(pdfId)
+                dao.deleteAllBookmarksWithPdfId(pdfId)
+                val pdfFile = File(pdf.filePath)
+                pdfFile.delete()
+                dao.deletePdfById(pdfId)
+                return@withContext ResponseState.Success<StatusMessageResponse>(StatusMessageResponse("Pdf deleted successfully"))
             } catch (e: Exception) {
                 return@withContext ResponseState.Failed(e.message ?: "Something went wrong")
             }

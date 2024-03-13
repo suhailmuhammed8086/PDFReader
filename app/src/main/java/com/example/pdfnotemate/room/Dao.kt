@@ -18,6 +18,10 @@ interface Dao {
     suspend fun addPdfNote(note: PdfNoteEntity) : Long
     @Query(Queries.GET_ALL_PDF_NOTES)
     suspend fun getAllPdfNotes(): List<PdfNoteEntity>
+    @Query(Queries.GET_PDF_NOTES_BY_ID)
+    suspend fun getPdfById(id: Long): PdfNoteEntity?
+    @Query(Queries.DELETE_PDF_NOTES_BY_ID)
+    suspend fun deletePdfById(id: Long)
 
     // TAG
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -34,6 +38,8 @@ interface Dao {
     suspend fun insertComment(comment: CommentEntity): Long
     @Query(Queries.GET_ALL_COMMENTS_WITH_PDF_ID)
     suspend fun getCommentsOfPdf(pdfId: Long): List<CommentEntity>
+    @Query(Queries.DELETE_ALL_COMMENTS_WITH_PDF_ID)
+    suspend fun deleteAllCommentsByPdfId(pdfId: Long)
     @Query(Queries.GET_COMMENT_WITH_ID)
     suspend fun getCommentWithId(id: Long): CommentEntity?
     @Query(Queries.UPDATE_COMMENT_WITH_ID)
@@ -46,6 +52,8 @@ interface Dao {
     suspend fun insertHighlight(comment: HighlightEntity): Long
     @Query(Queries.GET_ALL_HIGHLIGHT_WITH_PDF_ID)
     suspend fun getHighlightsOfPdf(pdfId: Long): List<HighlightEntity>
+    @Query(Queries.DELETE_ALL_HIGHLIGHT_WITH_PDF_ID)
+    suspend fun deleteAllHighlightsByPdfId(pdfId: Long)
     @Query(Queries.DELETE_HIGHLIGHTS_WITH_IDS)
     suspend fun deleteHighlightsWithIds(ids: List<Long>)
 
@@ -54,6 +62,8 @@ interface Dao {
     suspend fun insertBookmark(comment: BookmarkEntity): Long
     @Query(Queries.GET_ALL_BOOKMARK_WITH_PDF_ID)
     suspend fun getBookmarksOfPdf(pdfId: Long): List<BookmarkEntity>
+    @Query(Queries.DELETE_ALL_BOOKMARK_WITH_PDF_ID)
+    suspend fun deleteAllBookmarksWithPdfId(pdfId: Long)
     @Query(Queries.DELETE_BOOKMARK_WITH_IDS)
     suspend fun deleteBookmarksWithIds(ids: List<Long>)
     @Query(Queries.GET_BOOKMARK_WITH_PAGE_AND_PDF_ID)

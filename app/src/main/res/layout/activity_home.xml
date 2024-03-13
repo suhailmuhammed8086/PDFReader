@@ -70,7 +70,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:fontFamily="@font/jakarta_sans_medium_500"
-                        android:hint="Search by Name or Tag"
+                        android:hint="@string/search_by_name_or_tag"
                         android:includeFontPadding="false"
                         android:maxLines="1"
                         android:minHeight="50dp"

@@ -18,4 +18,5 @@
     <string name="page">"Page "</string>
     <string name="highlights">Highlights</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="search_by_name_or_tag">Search by Name or Tag</string>
 </resources>

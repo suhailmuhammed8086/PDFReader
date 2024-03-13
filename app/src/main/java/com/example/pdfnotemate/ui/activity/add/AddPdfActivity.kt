@@ -83,8 +83,6 @@ class AddPdfActivity : BaseActivity(), View.OnClickListener, TagFragment.Listene
         binding.btRemoveTag.setOnClickListener(this)
         // showing download or pick section
         showOrHideAddSection(true)
-
-        binding.etPdfUrl.setText("https://www.junkybooks.com/administrator/thebooks/65df046d09c57-power-of-self-discipline.pdf")
     }
 
     override fun onClick(v: View?) {
