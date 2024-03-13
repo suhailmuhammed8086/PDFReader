@@ -1,6 +1,6 @@
 # PdfNoteMate
 
-<h1>PDF Annotation and Reading Android Application</h1>
+<h2>PDF Annotation and Reading Android Application</h2>
 
 <p>This Android application is designed to facilitate efficient reading and annotating of PDF documents. It offers features such as highlighting, commenting, bookmarking, and text selection, all aimed at enhancing the user's experience with PDF files.</p>
 
