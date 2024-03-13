@@ -28,10 +28,6 @@
 
 <p>If you encounter any issues or have suggestions for improving the application, please don't hesitate to reach out. Your feedback is valuable in shaping the future development of this application.</p>
 
-<h2>License:</h2>
-
-<p>This project is licensed under the <em>[insert license type, e.g., MIT License]</em>. See the LICENSE file for more details.</p>
-
 <h2>Acknowledgments:</h2>
 
 <p>We would like to express our gratitude to the developers of the libraries used in this project for their invaluable contributions.</p>
