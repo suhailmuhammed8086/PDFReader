@@ -54,11 +54,8 @@ object FileDownloadTool {
                 }
 
                 // creating permanent file
-                var name = Uri.parse(url).lastPathSegment?: URLEncoder.encode(url, Charsets.UTF_8.name())
-                if (!name.uppercase().endsWith(".PDF")) {
-                    name+=".pdf"
-                }
-                name = AppFileManager.getRandomFileName(".pdf")
+
+                val name = AppFileManager.getRandomFileName(".pdf")
                 val saveFile = File(saveFileFolder, name)
                 // Moving data to permanent file
                 if (tempFile.exists()) {
